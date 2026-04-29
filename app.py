@@ -99,6 +99,9 @@ def add_card(term, definition):
         else:
             if seen_terms[term_key] == definition.lower():
                 skipped_duplicates += 1
+
+            elif definitions_are_similar(seen_terms[term_key], definition):
+                skipped_duplicates += 1
             else:
                 duplicate_cards.append({
                     "term": term,
@@ -195,7 +198,7 @@ with open("flashcards.csv", "w", newline="") as csv_file:
 
 print("Flashcards saved to flashcards.csv")
 
-print(f"\nExact duplicates skipped: {skipped_duplicates}")
+print(f"\nDuplicates skipped: {skipped_duplicates}")
 print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
 
 for duplicate in duplicate_cards:
