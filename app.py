@@ -10,7 +10,7 @@ def load_file_text(file_name):
         document = Document(file_name)
         return [paragraph.text for paragraph in document.paragraphs]
         
-    print("Unsupported file type. Please use a .txt file for now")
+    print("Unsupported file type. Please use a .txt or .docx file for now")
     return None
 
 # Cleans the data before storage
@@ -74,6 +74,32 @@ def generate_question(term, style="define"):
     
     else:
         return f'Define the term "{term}".'
+    
+def generate_flashcards(file_name):
+    global cards
+    global seen_terms
+    global duplicate_cards
+    global skipped_duplicates
+
+    cards.clear()
+    seen_terms.clear()
+    duplicate_cards.clear()
+    skipped_duplicates = 0
+
+    lines = load_file_text(file_name)
+
+    if lines is None:
+        return None
+    
+    for line in lines:
+        line = line.strip()
+
+        term, definition = parse_line(line)
+
+        if term and definition:
+            add_card(term, definition)
+
+    return cards
     
 def parse_is_line(line):
     term, definition = line.split(" is ", 1)
@@ -206,26 +232,16 @@ question_style = "define"
 # Loop forever until a valid file is provided
 while True:
     # Prompt user for file name and remove extra spaces
-    file_name = input("Enter the file name (ex: notes.txt): ").strip()
+    file_name = input("Enter the file name and type (ex: notes.txt): ").strip()
 
     try:
         # Attempt to open the file
-        lines = load_file_text(file_name)
+        cards = generate_flashcards(file_name)
 
-        if lines is None:
-            continue 
+        if cards is None:
+            continue
 
         print("\nFile loaded successfully!\n")
-
-        # Loop through each line in the file
-        for line in lines:
-            line = line.strip()  # Remove whitespace/newline
-
-            term, definition = parse_line(line)
-
-            if term and definition:
-                add_card(term, definition)
-
         break  # Exit loop once file is successfully processed
 
     except FileNotFoundError:
