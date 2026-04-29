@@ -99,7 +99,11 @@ def generate_flashcards(file_name):
         if term and definition:
             add_card(term, definition)
 
-    return cards
+    return {
+        "cards": cards,
+        "duplicates_skipped": skipped_duplicates,
+        "important_duplicates": duplicate_cards
+    }
     
 def parse_is_line(line):
     term, definition = line.split(" is ", 1)
@@ -236,10 +240,12 @@ while True:
 
     try:
         # Attempt to open the file
-        cards = generate_flashcards(file_name)
+        results = generate_flashcards(file_name)
 
-        if cards is None:
+        if results is None:
             continue
+
+        cards = results["cards"]
 
         print("\nFile loaded successfully!\n")
         break  # Exit loop once file is successfully processed
