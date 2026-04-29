@@ -217,6 +217,12 @@ def definitions_are_similar(def1, def2, threshold=0.8):
     
     return similarity >= threshold
 
+def save_flashcards_to_csv(cards, output_file="flashcards.csv"):
+    with open(output_file, "w", newline="") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=["front", "back"])
+        writer.writeheader()
+        writer.writerows(cards)
+
 # List to store flashcards
 cards = [] 
 
@@ -262,10 +268,7 @@ for card in cards:
     print(f"Back: {card['back']}\n")
 
 # Save flashcards to a CSV file
-with open("flashcards.csv", "w", newline="") as csv_file:
-    writer = csv.DictWriter(csv_file, fieldnames=["front", "back"])
-    writer.writeheader()
-    writer.writerows(cards)
+save_flashcards_to_csv(cards)
 
 print("Flashcards saved to flashcards.csv")
 
