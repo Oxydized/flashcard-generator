@@ -82,6 +82,9 @@ def add_card(term, definition):
     global skipped_duplicates
 
     if is_valid_card(term,definition):
+
+        definition = clean_definition(definition)
+
         card = {
             "front": generate_question(term, question_style),
             "back": definition
@@ -101,6 +104,20 @@ def add_card(term, definition):
                     "original_definition": seen_terms[term_key],
                     "new_definition": definition
                 })
+
+def clean_definition(definition):
+    
+    # Removes repeated spaces
+    definition = " ".join(definition.split())
+
+    # Capitalizes first letter
+    definition = definition[0].upper() + definition[1:]
+
+    # Adds ending punctuation if missing
+    if not definition.endswith((".", "!", "?")):
+        definition += "."
+    
+    return definition
 
 # List to store flashcards
 cards = [] 
@@ -139,6 +156,7 @@ while True:
 
                     if " is " in term:
                         term, partial_definition = term.split(" is ", 1)
+                        definition = partial_definition + " " + definition
                         definition = " ".join(definition.split())
                     
                     term = clean_term(term)
