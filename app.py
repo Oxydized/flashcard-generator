@@ -46,6 +46,30 @@ def is_valid_card(term, definition):
     
     return True
 
+def add_card(term, definition):
+    global skipped_duplicates
+
+    if is_valid_card(term,definition):
+        card = {
+            "front": f"What is {term}?",
+            "back": definition.strip()
+        }
+
+        term_key = normalize_term(term)
+
+        if term_key not in seen_terms:
+            seen_terms[term_key] = definition.lower()
+            cards.append(card)
+        else:
+            if seen_terms[term_key] == definition.lower():
+                skipped_duplicates += 1
+            else:
+                duplicate_cards.append({
+                    "term": term,
+                    "original_definition": seen_terms[term_key],
+                    "new_definition": definition
+                })
+
 # List to store flashcards
 cards = [] 
 
@@ -81,27 +105,7 @@ while True:
                     term = clean_term(term)
                     definition = definition.strip()
 
-                    if is_valid_card(term,definition):    
-                        # Create a dictionary for each card
-                        card = {
-                            "front": f"What is {term}?",
-                            "back": definition.strip()
-                        }
-                        
-                        term_key = normalize_term(term)
-
-                        if term_key not in seen_terms:
-                            seen_terms[term_key] = definition.lower()
-                            cards.append(card)
-                        else: 
-                            if seen_terms[term_key] == definition.lower():
-                                skipped_duplicates += 1
-                            else:
-                                duplicate_cards.append({
-                                    "term": term,
-                                    "original_definition": seen_terms[term_key],
-                                    "new_definition": definition
-                                })
+                    add_card(term, definition)
 
                 elif " is " in line:
                     term, definition = line.split(" is ", 1)
@@ -109,27 +113,7 @@ while True:
                     term = clean_term(term)
                     definition = definition.strip()
                     
-                    if is_valid_card(term, definition):
-                        card = {
-                            "front": f"What is {term}?",
-                            "back": definition.strip()
-                        }
-                        
-                        term_key = normalize_term(term)
-
-                        if term_key not in seen_terms:
-                            seen_terms[term_key] = definition.lower()
-                            cards.append(card)
-                        else:
-                            if seen_terms[term_key] == definition.lower():
-                                skipped_duplicates += 1
-                            else:
-                                duplicate_cards.append({
-                                    "term": term,
-                                    "original_definition": seen_terms[term_key],
-                                    "new_definition": definition
-                                })
-
+                    add_card(term, definition)
 
         break  # Exit loop once file is successfully processed
 
