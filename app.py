@@ -1,3 +1,4 @@
+from difflib import SequenceMatcher
 import csv
 
 # Cleans the data before storage
@@ -118,6 +119,11 @@ def clean_definition(definition):
         definition += "."
     
     return definition
+
+def definitions_are_similar(def1, def2, threshold=0.8):
+    similarity = SequenceMatcher(None, def1.lower(), def2.lower()).ratio()
+    
+    return similarity >= threshold
 
 # List to store flashcards
 cards = [] 
