@@ -86,6 +86,18 @@ def parse_is_line(line):
 
     return term, definition
 
+def parse_colon_line(line):
+    term, definition = line.split(":", 1)
+
+    if " is " in term:
+        term, partial_definition = term.split(" is ", 1)
+        definition = partial_definition + " " + definition
+        definition = " ".join(definition.split())
+    
+    term = clean_term(term)
+    definition = definition.strip()
+
+    return term, definition
 
 def add_card(term, definition):
     global skipped_duplicates
@@ -170,19 +182,8 @@ while True:
         for line in lines:
             line = line.strip()  # Remove whitespace/newline
 
-            # Check if the line contains a colon (Term: definition format)
             if ":" in line:
-                # Split into term and definition (only split on first colon)
-                term, definition = line.split(":", 1)
-
-                if " is " in term:
-                    term, partial_definition = term.split(" is ", 1)
-                    definition = partial_definition + " " + definition
-                    definition = " ".join(definition.split())
-                
-                term = clean_term(term)
-                definition = definition.strip()
-
+                term, definition = parse_colon_line(line)
                 add_card(term, definition)
 
             elif " is " in line:                    
