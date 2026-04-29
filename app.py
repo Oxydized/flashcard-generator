@@ -15,7 +15,12 @@ def clean_term(term):
     elif lower_term.startswith("the "):
         term = term[4:]
     return term.strip( )
-    
+
+
+def normalize_term(term):
+    return term.strip().lower()
+
+  
 # Validates data before storage
 def is_valid_card(term, definition):
     # Remove extra spaces before checking
@@ -43,6 +48,16 @@ def is_valid_card(term, definition):
 
 # List to store flashcards
 cards = [] 
+
+# Tracks terms already added
+seen_terms = {}
+
+# Stores possible important duplicates for review
+duplicate_cards = []
+
+# Counter for duplicates that were skipped
+skipped_duplicates = 0 
+
 
 # Loop forever until a valid file is provided
 while True:
@@ -72,7 +87,21 @@ while True:
                             "front": f"What is {term}?",
                             "back": definition.strip()
                         }
-                        cards.append(card) # add flashcards to list
+                        
+                        term_key = normalize_term(term)
+
+                        if term_key not in seen_terms:
+                            seen_terms[term_key] = definition.lower()
+                            cards.append(card)
+                        else: 
+                            if seen_terms[term_key] == definition.lower():
+                                skipped_duplicates += 1
+                            else:
+                                duplicate_cards.append({
+                                    "term": term,
+                                    "original_definition": seen_terms[term_key],
+                                    "new_definition": definition
+                                })
 
                 elif " is " in line:
                     term, definition = line.split(" is ", 1)
@@ -85,7 +114,22 @@ while True:
                             "front": f"What is {term}?",
                             "back": definition.strip()
                         }
-                        cards.append(card) # add flashcards to list
+                        
+                        term_key = normalize_term(term)
+
+                        if term_key not in seen_terms:
+                            seen_terms[term_key] = definition.lower()
+                            cards.append(card)
+                        else:
+                            if seen_terms[term_key] == definition.lower():
+                                skipped_duplicates += 1
+                            else:
+                                duplicate_cards.append({
+                                    "term": term,
+                                    "original_definition": seen_terms[term_key],
+                                    "new_definition": definition
+                                })
+
 
         break  # Exit loop once file is successfully processed
 
@@ -107,3 +151,11 @@ with open("flashcards.csv", "w", newline="") as csv_file:
     writer.writerows(cards)
 
 print("Flashcards saved to flashcards.csv")
+
+print(f"\nExact duplicates skipped: {skipped_duplicates}")
+print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
+
+for duplicate in duplicate_cards:
+    print(f"\nTerm: {duplicate['term']}")
+    print(f"Original definition: {duplicate['original_definition']}")
+    print(f"New definition: {duplicate['new_definition']}")
