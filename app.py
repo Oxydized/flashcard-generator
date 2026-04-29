@@ -46,13 +46,30 @@ def is_valid_card(term, definition):
     
     return True
 
+def generate_question(term, style="define"):
+    if style == "define":
+        return f'Define the term "{term}".'
+    
+    elif style == "meaning":
+        return f'What does "{term}" mean?'
+    
+    elif style == "concept":
+        return f'Explain the concept of "{term}".'
+    
+    elif style == "describe":
+        return f'Describe "{term}".'
+    
+    else:
+        return f'Define the term "{term}".'
+
+
 def add_card(term, definition):
     global skipped_duplicates
 
     if is_valid_card(term,definition):
         card = {
-            "front": f"What is {term}?",
-            "back": definition.strip()
+            "front": generate_question(term, question_style),
+            "back": definition
         }
 
         term_key = normalize_term(term)
@@ -81,6 +98,9 @@ duplicate_cards = []
 
 # Counter for duplicates that were skipped
 skipped_duplicates = 0 
+
+# Controls how flashcard questions are worded
+question_style = "define"
 
 
 # Loop forever until a valid file is provided
