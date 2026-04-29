@@ -61,6 +61,21 @@ def generate_question(term, style="define"):
     
     else:
         return f'Define the term "{term}".'
+    
+def parse_is_line(line):
+    term, definition = line.split(" is ", 1)
+
+    term = clean_term(term)
+    definition = definition.strip()
+    definition = definition.replace(": ", " ")
+
+    definition_starters = ("a ", "an ", "the ")
+
+    for starter in definition_starters:
+        if definition.lower().startswith(starter):
+            return term,definition
+
+    return term, definition
 
 
 def add_card(term, definition):
@@ -122,17 +137,17 @@ while True:
                     # Split into term and definition (only split on first colon)
                     term, definition = line.split(":", 1)
 
+                    if " is " in term:
+                        term, partial_definition = term.split(" is ", 1)
+                        definition = " ".join(definition.split())
+                    
                     term = clean_term(term)
                     definition = definition.strip()
 
                     add_card(term, definition)
 
-                elif " is " in line:
-                    term, definition = line.split(" is ", 1)
-                    
-                    term = clean_term(term)
-                    definition = definition.strip()
-                    
+                elif " is " in line:                    
+                    term, definition = parse_is_line(line)
                     add_card(term, definition)
 
         break  # Exit loop once file is successfully processed
