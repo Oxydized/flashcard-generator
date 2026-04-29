@@ -1,10 +1,14 @@
 from difflib import SequenceMatcher
+from docx import Document
 import csv
 
 def load_file_text(file_name):
     if file_name.lower().endswith(".txt"):
         with open(file_name, "r", encoding="utf8") as file:
             return file.readlines()
+    elif file_name.lower().endswith(".docx"):
+        document = Document(file_name)
+        return [paragraph.text for paragraph in document.paragraphs]
         
     print("Unsupported file type. Please use a .txt file for now")
     return None
@@ -97,7 +101,22 @@ def parse_colon_line(line):
     term = clean_term(term)
     definition = definition.strip()
 
+    # Confidence check
+    confidence = get_parse_confidence(term, definition)
+
+    if confidence < 2:
+        return None, None
+    
     return term, definition
+
+def parse_line(line):
+    if ":" in line:
+        return parse_colon_line(line)
+    
+    elif " is " in line:
+        return parse_is_line(line)
+    
+    return None, None
 
 def add_card(term, definition):
     global skipped_duplicates
@@ -143,6 +162,26 @@ def clean_definition(definition):
     
     return definition
 
+def get_parse_confidence(term, definition):
+    score = 0 
+
+    # Good signals
+    if len(term.split()) <= 6:
+        score += 1
+
+    if len(definition) > len(term):
+        score += 1
+
+    # Bad Signals
+    if "'" in term or '"' in term:
+        score -= 1
+
+    if term.endswith("."):
+        score -= 1
+
+    return score
+
+
 def definitions_are_similar(def1, def2, threshold=0.8):
     similarity = SequenceMatcher(None, def1.lower(), def2.lower()).ratio()
     
@@ -182,12 +221,9 @@ while True:
         for line in lines:
             line = line.strip()  # Remove whitespace/newline
 
-            if ":" in line:
-                term, definition = parse_colon_line(line)
-                add_card(term, definition)
+            term, definition = parse_line(line)
 
-            elif " is " in line:                    
-                term, definition = parse_is_line(line)
+            if term and definition:
                 add_card(term, definition)
 
         break  # Exit loop once file is successfully processed
