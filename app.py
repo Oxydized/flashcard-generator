@@ -1,6 +1,14 @@
 from difflib import SequenceMatcher
 import csv
 
+def load_file_text(file_name):
+    if file_name.lower().endswith(".txt"):
+        with open(file_name, "r", encoding="utf8") as file:
+            return file.readlines()
+        
+    print("Unsupported file type. Please use a .txt file for now")
+    return None
+
 # Cleans the data before storage
 def clean_term(term):
     #removes extra spaces
@@ -151,31 +159,35 @@ while True:
 
     try:
         # Attempt to open the file
-        with open(file_name, 'r', encoding='utf8') as file:
-            print("\nFile loaded successfully!\n")
+        lines = load_file_text(file_name)
 
-            # Loop through each line in the file
-            for line in file:
-                line = line.strip()  # Remove whitespace/newline
+        if lines is None:
+            continue 
 
-                # Check if the line contains a colon (Term: definition format)
-                if ":" in line:
-                    # Split into term and definition (only split on first colon)
-                    term, definition = line.split(":", 1)
+        print("\nFile loaded successfully!\n")
 
-                    if " is " in term:
-                        term, partial_definition = term.split(" is ", 1)
-                        definition = partial_definition + " " + definition
-                        definition = " ".join(definition.split())
-                    
-                    term = clean_term(term)
-                    definition = definition.strip()
+        # Loop through each line in the file
+        for line in lines:
+            line = line.strip()  # Remove whitespace/newline
 
-                    add_card(term, definition)
+            # Check if the line contains a colon (Term: definition format)
+            if ":" in line:
+                # Split into term and definition (only split on first colon)
+                term, definition = line.split(":", 1)
 
-                elif " is " in line:                    
-                    term, definition = parse_is_line(line)
-                    add_card(term, definition)
+                if " is " in term:
+                    term, partial_definition = term.split(" is ", 1)
+                    definition = partial_definition + " " + definition
+                    definition = " ".join(definition.split())
+                
+                term = clean_term(term)
+                definition = definition.strip()
+
+                add_card(term, definition)
+
+            elif " is " in line:                    
+                term, definition = parse_is_line(line)
+                add_card(term, definition)
 
         break  # Exit loop once file is successfully processed
 
