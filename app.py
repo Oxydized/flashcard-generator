@@ -238,44 +238,45 @@ skipped_duplicates = 0
 # Controls how flashcard questions are worded
 question_style = "define"
 
+if __name__ == "__main__":
 
-# Loop forever until a valid file is provided
-while True:
-    # Prompt user for file name and remove extra spaces
-    file_name = input("Enter the file name and type (ex: notes.txt): ").strip()
+    # Loop forever until a valid file is provided
+    while True:
+        # Prompt user for file name and remove extra spaces
+        file_name = input("Enter the file name and type (ex: notes.txt): ").strip()
 
-    try:
-        # Attempt to open the file
-        results = generate_flashcards(file_name)
+        try:
+            # Attempt to open the file
+            results = generate_flashcards(file_name)
 
-        if results is None:
-            continue
+            if results is None:
+                continue
 
-        cards = results["cards"]
+            cards = results["cards"]
 
-        print("\nFile loaded successfully!\n")
-        break  # Exit loop once file is successfully processed
+            print("\nFile loaded successfully!\n")
+            break  # Exit loop once file is successfully processed
 
-    except FileNotFoundError:
-        # If file doesn't exist, prompt user again
-        print("File not found. Try again.\n")
+        except FileNotFoundError:
+            # If file doesn't exist, prompt user again
+            print("File not found. Try again.\n")
 
-# Prints flashcards from stored list
-print("\nAll Flashcards:\n")
+    # Prints flashcards from stored list
+    print("\nAll Flashcards:\n")
 
-for card in cards:
-    print(f"Front: {card['front']}")
-    print(f"Back: {card['back']}\n")
+    for card in cards:
+        print(f"Front: {card['front']}")
+        print(f"Back: {card['back']}\n")
 
-# Save flashcards to a CSV file
-save_flashcards_to_csv(cards)
+    # Save flashcards to a CSV file
+    save_flashcards_to_csv(cards)
 
-print("Flashcards saved to flashcards.csv")
+    print("Flashcards saved to flashcards.csv")
 
-print(f"\nDuplicates skipped: {skipped_duplicates}")
-print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
+    print(f"\nDuplicates skipped: {skipped_duplicates}")
+    print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
 
-for duplicate in duplicate_cards:
-    print(f"\nTerm: {duplicate['term']}")
-    print(f"Original definition: {duplicate['original_definition']}")
-    print(f"New definition: {duplicate['new_definition']}")
+    for duplicate in duplicate_cards:
+        print(f"\nTerm: {duplicate['term']}")
+        print(f"Original definition: {duplicate['original_definition']}")
+        print(f"New definition: {duplicate['new_definition']}")
