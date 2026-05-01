@@ -85,6 +85,7 @@ def generate_flashcards(file_name):
     seen_terms.clear()
     duplicate_cards.clear()
     skipped_duplicates = 0
+    skipped_lines = []
 
     lines = load_file_text(file_name)
 
@@ -94,15 +95,22 @@ def generate_flashcards(file_name):
     for line in lines:
         line = line.strip()
 
+        if not line:
+            continue
+
         term, definition = parse_line(line)
 
-        if term and definition:
-            add_card(term, definition)
+        if not term or not definition:
+            skipped_lines.append(line)
+            continue
+
+        add_card(term, definition)
 
     return {
         "cards": cards,
         "duplicates_skipped": skipped_duplicates,
-        "important_duplicates": duplicate_cards
+        "important_duplicates": duplicate_cards,
+        "skipped_lines": skipped_lines
     }
     
 def parse_is_line(line):
@@ -238,6 +246,9 @@ skipped_duplicates = 0
 # Controls how flashcard questions are worded
 question_style = "define"
 
+# Track skipped lines from document in a list
+skipped_lines = []
+
 if __name__ == "__main__":
 
     # Loop forever until a valid file is provided
@@ -275,6 +286,10 @@ if __name__ == "__main__":
 
     print(f"\nDuplicates skipped: {skipped_duplicates}")
     print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
+    print(f"\nSkipped lines: {len(results['skipped_lines'])}")
+
+    for line in results["skipped_lines"]:
+        print(f"Skipped: {line}")
 
     for duplicate in duplicate_cards:
         print(f"\nTerm: {duplicate['term']}")
