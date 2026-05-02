@@ -1,20 +1,240 @@
+This project started as a way to practice backend parsing and gradually evolved into a full interactive study application.
+
 # Flashcard Generator
 
-A Python and Streamlit web app that generates study flashcards from uploaded `.txt` and `.docx` notes.
+An interactive flashcard generation and study application built with Python and Streamlit.
 
-## Features
+This project allows users to upload `.txt` or `.docx` notes and automatically generate study flashcards through rule-based parsing and validation.
 
-- Upload `.txt` or `.docx` files
-- Generate flashcards from supported note formats
-- View flashcards one at a time in study mode
-- Show or hide answers
-- Navigate between cards
-- Download generated flashcards as a CSV
-- View skipped lines that could not be parsed
-- Detect and skip duplicate flashcards
+---
 
-## Supported Input Formats
+# Features
+
+## Flashcard Generation
+
+- Upload `.txt` and `.docx` files
+- Automatically parse notes into flashcards
+- Supports multiple input formats
+- Cleans and validates generated cards
+- Detects duplicate and fuzzy duplicate flashcards
+- Exports flashcards as downloadable CSV files
+
+---
+
+## Study Interface
+
+- Interactive Streamlit web interface
+- One-card-at-a-time study mode
+- Previous / Next card navigation
+- Show / Hide answer toggle
+- Flashcard counter display
+- Styled flashcard UI
+- Optional flashcard table view
+
+---
+
+## Parser Transparency
+
+- Tracks skipped/unparsed lines
+- Displays skipped lines inside expandable UI section
+- Helps users identify unsupported formatting
+- Improves parser debugging and transparency
+
+---
+
+# Supported Input Formats
+
+The parser currently supports:
 
 ```text
 Term: definition
+```
+
+Example:
+
+```text
+Firewall: A device or software that filters network traffic based on security rules.
+```
+
+And:
+
+```text
 Term is definition
+```
+
+Example:
+
+```text
+A subnet is a smaller network created by dividing a larger network.
+```
+
+---
+
+# Technologies Used
+
+- Python
+- Streamlit
+- Pandas
+- python-docx
+- difflib
+
+---
+
+# Project Structure
+
+```text
+flashcard-generator/
+├── app.py
+├── streamlit_app.py
+├── requirements.txt
+├── README.md
+└── sample_notes.txt
+```
+
+---
+
+# How to Install
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+```
+
+Navigate into the project folder:
+
+```bash
+cd flashcard-generator
+```
+
+Install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+---
+
+# How to Run
+
+Start the Streamlit application:
+
+```bash
+python -m streamlit run streamlit_app.py
+```
+
+The application will automatically open in your browser.
+
+---
+
+# Example Input
+
+```text
+Firewall: A device or software that filters network traffic based on security rules.
+
+A subnet is a smaller network created by dividing a larger network.
+
+Encryption: The process of converting data into a secure format.
+```
+
+---
+
+# Current Capabilities
+
+## Backend
+
+- Modular parser architecture
+- Reusable flashcard generation functions
+- Input validation
+- Duplicate detection
+- Fuzzy duplicate comparison
+- CSV export support
+- Skipped-line tracking
+
+---
+
+## Frontend
+
+- Interactive Streamlit UI
+- Session state management
+- Flashcard navigation
+- Responsive layout using Streamlit columns
+- Styled HTML/CSS flashcards
+- CSV downloads
+- Expandable skipped-line viewer
+
+---
+
+# Future Improvements
+
+## Parser Enhancements
+
+- Additional sentence pattern support
+- Better parser confidence scoring
+- Skipped-line reason tracking
+- Improved natural-language parsing
+
+---
+
+## Study Features
+
+- Shuffle mode
+- Reverse flashcards
+- Fill-in-the-blank flashcards
+- Multiple-choice study mode
+- Spaced repetition
+- Saved study decks
+
+---
+
+## File Support
+
+- PDF support
+- OCR/image support
+- Better DOCX formatting support
+
+---
+
+## UI Improvements
+
+- Flashcard flip animations
+- Dark/light theme support
+- Progress tracking
+- Study statistics
+
+---
+
+## AI Integration (Planned)
+
+Future AI-assisted functionality may include:
+
+- Automatic concept extraction
+- Semantic flashcard generation
+- Smarter duplicate detection
+- Difficulty-based flashcards
+- AI-generated quizzes
+- Summarization of lecture notes into study decks
+
+The current system intentionally uses deterministic rule-based parsing first to establish strong backend architecture and parser transparency before introducing AI-assisted enhancements.
+
+---
+
+# Purpose of This Project
+
+This project was built to strengthen skills in:
+
+- Python backend development
+- Frontend UI development with Streamlit
+- State management
+- File processing
+- Parser design
+- Software architecture
+- Debugging and validation systems
+- Git/GitHub workflow
+- Building user-focused study tools
+
+---
+
+# Author
+
+William Warren

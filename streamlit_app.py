@@ -96,9 +96,9 @@ if uploaded_file is not None:
         skipped_lines = results["skipped_lines"]
 
         if skipped_lines:
-            with st.expander(f"View Skipped lies ({len(skipped_lines)})"):
-                    for line in skipped_lines:
-                        st.write(line)
+            with st.expander(f"View Skipped lines ({len(skipped_lines)})"):
+                for line in skipped_lines:
+                    st.write(line)
 
         if cards:
             # Converts card list into a DataFrame for table preview and CSV export
