@@ -59,6 +59,16 @@ def is_valid_card(term, definition):
     
     return True
 
+def is_question_line(line):
+    return line.strip().endswith("?")
+
+def add_qa_card(question, answer):
+    card = {
+        "front": question.strip(),
+        "back": clean_definition(answer)
+    }
+    cards.append(card)
+
 def generate_question(term, style="define"):
     if style == "define":
         return f'Define the term "{term}".'
@@ -92,11 +102,33 @@ def generate_flashcards(file_name):
     if lines is None:
         return None
     
-    for line in lines:
-        line = line.strip()
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
 
+        # Skip empty lines
         if not line:
+            i += 1
             continue
+
+        # Q&A Parsing
+        if is_question_line(line):
+            j = i + 1
+
+            # Skip blank lines between question and answer
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+
+            if j < len(lines):
+                next_line = lines[j].strip()
+
+                # Avoid pairing question with another question
+                if not is_question_line(next_line):
+                    add_qa_card(line, next_line)
+
+                    # Skip both question and answer
+                    i = j + 1 
+                    continue 
 
         term, definition = parse_line(line)
 
@@ -105,9 +137,12 @@ def generate_flashcards(file_name):
                 "line": line,
                 "reason": get_skip_reason(line)
             })
+            i += 1
             continue
 
         add_card(term, definition)
+
+        i += 1
 
     return {
         "cards": cards,
@@ -264,7 +299,7 @@ def get_skip_reason(line):
         return "Missing term"
     
     if line.endswith("?"):
-        return "Question format detected, future Q&A will be added"
+        return "Question format detected without answer"
     
     if len(line.split()) <= 4:
         return "Missing definition"
@@ -337,8 +372,9 @@ if __name__ == "__main__":
     print(f"\nPossible important duplicates found: {len(duplicate_cards)}")
     print(f"\nSkipped lines: {len(results['skipped_lines'])}")
 
-    for line in results["skipped_lines"]:
-        print(f"Skipped: {line}")
+    for skipped in results["skipped_lines"]:
+        print(f"Skipped: {skipped['line']}")
+        print(f"Reason: {skipped['reason']}")
 
     for duplicate in duplicate_cards:
         print(f"\nTerm: {duplicate['term']}")
