@@ -279,7 +279,7 @@ def get_parse_confidence(term, definition):
     if len(term.split()) <= 6:
         score += 1
 
-    if len(definition) > len(term):
+    if len(definition.split()) > len(term.split()):
         score += 1
 
     # Bad Signals
@@ -288,6 +288,12 @@ def get_parse_confidence(term, definition):
 
     if term.endswith("."):
         score -= 1
+
+    if any(char.isdigit() for char in definition):
+        score += 1
+
+    if len(definition.split()) >= 2:
+        score += 1
 
     return score
 
