@@ -152,14 +152,16 @@ if uploaded_file is not None:
                 st.session_state.card_index = 0
 
             # Navigation row: card counter on left, previous/next buttons centered
-            nav_left, nav_center_1, nav_center_2, nav_right = st.columns([2.4, 1, 1, 2])
+            nav_left, nav_center_1, nav_center_2, shuffle_col, reset_col = st.columns([1.5, 1, 1, 1, 1.5])
 
             with nav_left:
                 st.markdown(
                     f"""
                     <div style="
                         font-size: 18px;
-                        padding-top: 8px;
+                        padding-top: 10px;
+                        text-align: right;
+                        padding-right: 10px;
                     ">
                         Card {st.session_state.card_index + 1} of {len(study_cards)}
                     </div>
@@ -169,7 +171,7 @@ if uploaded_file is not None:
 
             # Moves to previous card and wraps around to the last card if needed
             with nav_center_1:
-                if st.button("Previous"):
+                if st.button("← Back"):
                     st.session_state.card_index = (
                         st.session_state.card_index - 1
                     ) % len(study_cards)
@@ -178,10 +180,24 @@ if uploaded_file is not None:
 
             # Moves to next card and wraps around to the first card if needed
             with nav_center_2:
-                if st.button("Next"):
+                if st.button("Next →"):
                     st.session_state.card_index = (
                         st.session_state.card_index + 1
                     ) % len(study_cards)
+                    st.session_state.show_answer = False
+                    st.rerun()
+
+            with shuffle_col:
+                if st.button("Shuffle"):
+                    random.shuffle(st.session_state.study_cards)
+                    st.session_state.card_index = 0
+                    st.session_state.show_answer = False
+                    st.rerun()
+
+            with reset_col:
+                if st.button("Reset"):
+                    st.session_state.study_cards = st.session_state.original_cards.copy()
+                    st.session_state.card_index = 0
                     st.session_state.show_answer = False
                     st.rerun()
 
@@ -217,22 +233,6 @@ if uploaded_file is not None:
                 """,
                 unsafe_allow_html=True
             )
-
-            shuffle_left, shuffle_center_1, shuffle_center_2, shuffle_right = st.columns([2.4,1,1,2])
-
-            with shuffle_center_1:
-                if st.button("Shuffle"):
-                    random.shuffle(st.session_state.study_cards)
-                    st.session_state.card_index = 0
-                    st.session_state.show_answer = False
-                    st.rerun()
-
-            with shuffle_center_2:
-                if st.button("Reset"):
-                    st.session_state.study_cards = st.session_state.original_cards.copy()
-                    st.session_state.card_index = 0
-                    st.session_state.show_answer = False
-                    st.rerun()
 
             # Centers the answer toggle button
             left, center, right = st.columns([2.5, 2, 2])
