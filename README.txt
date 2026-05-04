@@ -27,6 +27,8 @@ This project allows users to upload `.txt` or `.docx` notes and automatically ge
 - One-card-at-a-time study mode
 - Previous / Next card navigation
 - Show / Hide answer toggle
+- Shuffle flashcards during study mode
+- Reset flashcards back to original generated order
 - Flashcard counter display
 - Styled flashcard UI
 - Optional flashcard table view
@@ -37,8 +39,10 @@ This project allows users to upload `.txt` or `.docx` notes and automatically ge
 
 - Tracks skipped/unparsed lines
 - Displays skipped lines inside expandable UI section
+- Displays skipped lines with reason classifications
 - Helps users identify unsupported formatting
 - Improves parser debugging and transparency
+- Shows duplicate skip counts
 
 ---
 
@@ -48,6 +52,15 @@ The parser currently supports:
 
 ```text
 Term: definition
+```
+
+```text
+Term has definition
+Term consists of definition
+Term provides definition
+Term determines definition
+Term translates definition
+Term stores definition
 ```
 
 Example:
@@ -145,6 +158,9 @@ Encryption: The process of converting data into a secure format.
 
 - Modular parser architecture
 - Reusable flashcard generation functions
+- Reusable pattern-based parser helper
+- Expanded sentence pattern support
+- Skipped-line reason classification
 - Input validation
 - Duplicate detection
 - Fuzzy duplicate comparison
@@ -156,6 +172,9 @@ Encryption: The process of converting data into a secure format.
 ## Frontend
 
 - Interactive Streamlit UI
+- Shuffle and reset study controls
+- Duplicate skip count display
+- Skipped-line reason display
 - Session state management
 - Flashcard navigation
 - Responsive layout using Streamlit columns
@@ -169,16 +188,16 @@ Encryption: The process of converting data into a secure format.
 
 ## Parser Enhancements
 
-- Additional sentence pattern support
+- Question/answer pair parsing
+- Multi-file upload support
+- Parser precision tuning
 - Better parser confidence scoring
-- Skipped-line reason tracking
 - Improved natural-language parsing
 
 ---
 
 ## Study Features
 
-- Shuffle mode
 - Reverse flashcards
 - Fill-in-the-blank flashcards
 - Multiple-choice study mode

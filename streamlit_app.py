@@ -94,6 +94,20 @@ if uploaded_file is not None:
             unsafe_allow_html=True
         )
 
+        st.markdown(
+            f"""
+            <div style="
+                text-align: center;
+                font-size: 14px;
+                color: #aaa;
+                margin-bottom: 15px;
+            ">
+                Duplicates skipped: {results['duplicates_skipped']}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
         skipped_lines = results["skipped_lines"]
 
         if skipped_lines:
