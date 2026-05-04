@@ -41,7 +41,7 @@ st.markdown(
 st.markdown(
     """
     <p style='text-align: center; font-size:18px;'>
-        Upload a .txt or .docx file to generate flashcards.
+        Upload a .txt, .pdf or .docx file to generate flashcards.
     </p>
     """,
     unsafe_allow_html=True
@@ -54,7 +54,7 @@ left, center, right = st.columns([1, 4, 1])
 with center:
     uploaded_file = st.file_uploader(
         label="",
-        type=["txt", "docx"]
+        type=["txt", "docx", "pdf"]
     )
 
 
