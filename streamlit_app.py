@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import tempfile
 import os
+import random
 
 # Imports the backend flashcard generation function from app.py
 from app import generate_flashcards
@@ -111,6 +112,14 @@ if uploaded_file is not None:
                     )
 
         if cards:
+            if "original_cards" not in st.session_state:
+                st.session_state.original_cards = cards.copy()
+
+            if "study_cards" not in st.session_state:
+                st.session_state.study_cards = cards.copy()
+
+            study_cards = st.session_state.study_cards
+
             # Converts card list into a DataFrame for table preview and CSV export
             df = pd.DataFrame(cards)
             csv_data = df.to_csv(index=False).encode("utf-8")
@@ -139,7 +148,7 @@ if uploaded_file is not None:
                 st.session_state.show_answer = False
 
             # Prevents index errors if a new upload has fewer cards
-            if st.session_state.card_index >= len(cards):
+            if st.session_state.card_index >= len(study_cards):
                 st.session_state.card_index = 0
 
             # Navigation row: card counter on left, previous/next buttons centered
@@ -152,7 +161,7 @@ if uploaded_file is not None:
                         font-size: 18px;
                         padding-top: 8px;
                     ">
-                        Card {st.session_state.card_index + 1} of {len(cards)}
+                        Card {st.session_state.card_index + 1} of {len(study_cards)}
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -163,7 +172,7 @@ if uploaded_file is not None:
                 if st.button("Previous"):
                     st.session_state.card_index = (
                         st.session_state.card_index - 1
-                    ) % len(cards)
+                    ) % len(study_cards)
                     st.session_state.show_answer = False
                     st.rerun()
 
@@ -172,12 +181,12 @@ if uploaded_file is not None:
                 if st.button("Next"):
                     st.session_state.card_index = (
                         st.session_state.card_index + 1
-                    ) % len(cards)
+                    ) % len(study_cards)
                     st.session_state.show_answer = False
                     st.rerun()
 
             # Gets current card based on selected index
-            current_card = cards[st.session_state.card_index]
+            current_card = study_cards[st.session_state.card_index]
 
             # Extracts the term from the generated front text
             front_text = current_card["front"]
@@ -208,6 +217,22 @@ if uploaded_file is not None:
                 """,
                 unsafe_allow_html=True
             )
+
+            shuffle_left, shuffle_center_1, shuffle_center_2, shuffle_right = st.columns([2.4,1,1,2])
+
+            with shuffle_center_1:
+                if st.button("Shuffle"):
+                    random.shuffle(st.session_state.study_cards)
+                    st.session_state.card_index = 0
+                    st.session_state.show_answer = False
+                    st.rerun()
+
+            with shuffle_center_2:
+                if st.button("Reset"):
+                    st.session_state.study_cards = st.session_state.original_cards.copy()
+                    st.session_state.card_index = 0
+                    st.session_state.show_answer = False
+                    st.rerun()
 
             # Centers the answer toggle button
             left, center, right = st.columns([2.5, 2, 2])
