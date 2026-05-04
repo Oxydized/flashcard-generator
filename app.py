@@ -101,7 +101,10 @@ def generate_flashcards(file_name):
         term, definition = parse_line(line)
 
         if not term or not definition:
-            skipped_lines.append(line)
+            skipped_lines.append({
+                "line": line,
+                "reason": get_skip_reason(line)
+            })
             continue
 
         add_card(term, definition)
@@ -252,6 +255,21 @@ def get_parse_confidence(term, definition):
         score -= 1
 
     return score
+
+def get_skip_reason(line):
+    if line.endswith(":"):
+        return "Empty definition"
+    
+    if line.startswith(":"):
+        return "Missing term"
+    
+    if line.endswith("?"):
+        return "Question format detected, future Q&A will be added"
+    
+    if len(line.split()) <= 4:
+        return "Missing definition"
+    
+    return "Unsupported format"
 
 
 def definitions_are_similar(def1, def2, threshold=0.8):

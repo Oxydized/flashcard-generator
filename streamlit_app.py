@@ -97,8 +97,18 @@ if uploaded_file is not None:
 
         if skipped_lines:
             with st.expander(f"View Skipped lines ({len(skipped_lines)})"):
-                for line in skipped_lines:
-                    st.write(line)
+                for skipped in skipped_lines:
+                    st.markdown(
+                        f"""
+                        <div style="margin-bottom: 10px;">
+                            <strong>{skipped['line']}</strong><br>
+                            <span style="color: red;">
+                                Reason: {skipped['reason']}
+                            </span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
         if cards:
             # Converts card list into a DataFrame for table preview and CSV export
