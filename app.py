@@ -112,20 +112,18 @@ def generate_flashcards(file_name):
         "important_duplicates": duplicate_cards,
         "skipped_lines": skipped_lines
     }
-    
-def parse_is_line(line):
-    term, definition = line.split(" is ", 1)
+
+def parse_pattern_line(line, separator):
+    term, definition = line.split(separator, 1)
 
     term = clean_term(term)
     definition = definition.strip()
-    definition = definition.replace(": ", " ")
 
-    definition_starters = ("a ", "an ", "the ")
+    confidence = get_parse_confidence(term, definition)
 
-    for starter in definition_starters:
-        if definition.lower().startswith(starter):
-            return term,definition
-
+    if confidence < 2:
+        return None, None
+    
     return term, definition
 
 def parse_colon_line(line):
@@ -151,8 +149,44 @@ def parse_line(line):
     if ":" in line:
         return parse_colon_line(line)
     
-    elif " is " in line:
-        return parse_is_line(line)
+    patterns = [
+        " is ",
+        " has ",
+        " consists of ",
+        " provides ",
+        " determines ",
+        " translates ",
+        " stores ",
+        " manages ",
+        " uses ",
+        " forwards ",
+        " connects ",
+        " refers to ",
+        " represents ",
+        " assumes ",
+        " distributes ",
+        " acts as ",
+        " handles ",
+        " runs ",
+        " uniquely identifies ",
+        " improves ",
+        " repeats ",
+        " attempts ",
+        " adds ",
+        " packages ",
+        " involves ",
+        " identifies ",
+        " are inspired by ",
+        " measures ",
+        " occurs when ",
+        " store ",
+        " stores ",
+        " use ",
+    ]
+
+    for pattern in patterns:
+        if pattern in line: 
+            return parse_pattern_line(line, pattern)
     
     return None, None
 
@@ -245,9 +279,6 @@ skipped_duplicates = 0
 
 # Controls how flashcard questions are worded
 question_style = "define"
-
-# Track skipped lines from document in a list
-skipped_lines = []
 
 if __name__ == "__main__":
 

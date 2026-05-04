@@ -1,73 +1,125 @@
-Firewall: A device or software that filters network traffic based on security rules.
-Phishing: A social engineering attack used to trick users into revealing sensitive information.
-Malware: Software designed to harm, exploit, or disrupt systems.
-Encryption: The process of converting data into a secure format to prevent unauthorized access.
-Decryption: The process of converting encrypted data back into its original form.
-VPN: A Virtual Private Network that creates a secure connection over the internet.
-IP Address: A unique identifier assigned to devices on a network.
-DNS: A system that translates domain names into IP addresses.
-SQL: Structured Query Language used to manage and query databases.
-HTTP: A protocol used for transferring web data between client and server.
-HTTPS: A secure version of HTTP that uses encryption.
-Authentication: The process of verifying a user’s identity.
-Authorization: The process of determining what a user is allowed to access.
-Brute Force Attack: An attempt to guess passwords by trying many combinations.
-Hashing: The process of converting data into a fixed-length value for security.
-
-A subnet is a smaller network created by dividing a larger network.
-Latency is the delay between a request and a response in a network.
-Throughput is the amount of data transferred over a network in a given time.
-A packet is a unit of data transmitted over a network.
-Bandwidth is the maximum rate of data transfer across a network path.
-A proxy server is an intermediary server that forwards requests between clients and other servers.
-A load balancer is a system that distributes network traffic across multiple servers.
-A session is a temporary connection between two systems.
-A cookie is a small piece of data stored on a user's browser.
-A cache is temporary storage used to speed up data access.
-A daemon is a background process that runs without user interaction.
-A thread is the smallest unit of execution within a process.
-A process is a running instance of a program.
-A kernel is the core part of an operating system that manages hardware and resources.
-A container is a lightweight, portable unit that packages software and its dependencies.
-
-An API is a set of rules that allows different software systems to communicate.
-The cloud is a network of remote servers used to store and process data.
-A database is a structured collection of data stored electronically.
-A variable is a storage location paired with an associated name.
-An algorithm is a step-by-step procedure used to solve a problem.
-
-Time: A measurement: used in physics and science.
-Port 443: Commonly used for HTTPS: secure web traffic.
-Token: A temporary credential: often used in authentication systems.
-
-   Router: A networking device that forwards data between networks.
-Password Policy: Rules that define password length, complexity, and reuse limits.   
-   Session Timeout is the amount of time before an inactive user is logged out.   
-
-A: First letter of the alphabet.
-An: An article used before vowel sounds.
-CPU: Central Processing Unit.
-RAM is short-term memory used by the computer.
+Cybersecurity: The practice of protecting systems, networks, and data from digital attacks.
+A firewall is a security device that filters incoming and outgoing network traffic.
+Encryption: The process of converting readable data into an unreadable format.
+Authentication is the process of verifying a user’s identity.
+Authorization determines what resources a user can access.
+VPN: A secure tunnel used to protect internet traffic.
+DNS translates domain names into IP addresses.
+Latency is the delay between a request and response.
+Bandwidth: Maximum amount of transferable network data.
+A subnet is a smaller division of a larger network.
 
 OSI Model has 7 layers
 TCP/IP consists of four layers
-Cloud computing provides shared computing resources over the internet
-Zero Trust assumes no user or device should be trusted automatically
+Cloud computing provides scalable computing resources over the internet
+Zero Trust assumes no device or user should be trusted automatically
+A load balancer distributes traffic across multiple servers
+A router forwards packets between networks
+A switch connects devices within the same local network
+A proxy server acts as an intermediary between users and the internet
 
-What is phishing?
-Phishing is a social engineering attack where attackers trick users into giving up sensitive information.
+CPU: Central Processing Unit
+RAM is temporary memory used during active tasks
+GPU handles graphics processing and parallel computations
+The kernel manages hardware and operating system resources
+A process is a running instance of a program
+A thread is the smallest unit of execution within a process
+A daemon runs in the background without user interaction
+
+SQL: Structured Query Language used to interact with databases.
+A primary key uniquely identifies a record in a table.
+Normalization is the process of organizing database structures efficiently.
+An index improves database query performance.
+A foreign key connects related database tables.
+
+HTTP: Protocol used for transferring web data.
+HTTPS uses encryption to secure web traffic.
+Port 443 is commonly used for HTTPS traffic.
+SSH uses port 22 for secure remote access.
+API: A set of rules that allow systems to communicate.
+REST is an architectural style used for web services.
+JSON is commonly used for API data exchange.
+
+Python: Popular programming language known for readability.
+A variable stores data values for later use.
+A function is reusable code designed to perform a task.
+An algorithm is a step-by-step problem-solving procedure.
+A loop repeats instructions until a condition changes.
+A list stores ordered collections of items.
+A dictionary stores key-value pairs.
+
+Hashing: Converts data into fixed-length output values.
+Phishing is a social engineering attack targeting users.
+Malware refers to malicious software designed to damage systems.
+A brute force attack attempts many password combinations rapidly.
+Multi-factor authentication adds additional account security layers.
+
+Important exam topics:
+CIA Triad
+OSI layers
+Ports and protocols
+Difference between authentication and authorization
+
+Need to review:
+Subnetting
+Binary conversion
+SQL joins
+Python loops
+
+Professor said cloud computing will definitely be on test
+Remember to memorize ports:
+80 = HTTP
+443 = HTTPS
+22 = SSH
 
 What port does HTTPS use?
 Port 443 is commonly used for HTTPS traffic.
 
-Term without definition:
-: Definition without a term
-This line has no separator
-Colon but weird spacing : value with extra spacing
-Trailing colon only:
+What does DNS do?
+DNS translates domain names into IP addresses.
+
 A system is
-is used incorrectly in this sentence
-This is not a definition format
-A log file is a record: used for tracking system events
+This line has no separator
+Trailing colon only:
+: Missing term example
+Term without definition:
 SQL:
-   :
+:
+
+Cache memory stores frequently accessed data.
+A cache improves performance by reducing retrieval times.
+Cookies store user session information in browsers.
+A session represents a temporary interaction between systems.
+
+Containerization packages software with dependencies.
+Docker is commonly used for containerization.
+Kubernetes manages container orchestration.
+
+Machine learning involves training systems using data.
+Supervised learning uses labeled datasets.
+Unsupervised learning identifies patterns without labels.
+Neural networks are inspired by the human brain.
+
+The cloud is a network of remote servers.
+An API provides communication between software systems.
+A database stores structured electronic data.
+An operating system manages hardware and software resources.
+
+Midterm review:
+Study encryption methods
+Know difference between symmetric and asymmetric encryption
+Review packet switching
+Look over subnet masks again
+
+A packet is a unit of transmitted network data.
+Throughput measures successful data transfer rates.
+Jitter refers to inconsistency in packet delay.
+Packet loss occurs when network packets fail to arrive.
+
+The internet is
+Encryption:
+A:
+An:
+The:
+What:
+is:
