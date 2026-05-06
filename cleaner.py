@@ -14,10 +14,8 @@ def clean_term(term):
         term = term[4:]
     return term.strip( )
 
-
 def normalize_term(term):
     return term.strip().lower()
-
 
 def clean_definition(definition):
     
@@ -32,3 +30,28 @@ def clean_definition(definition):
         definition += "."
     
     return definition
+
+# Validates data before storage
+def is_valid_card(term, definition):
+    # Remove extra spaces before checking
+    term = term.strip()
+    definition = definition.strip()
+
+    # Skips empty terms or definitions
+    if not term or not definition:
+        return False
+    
+    # Skips terms & definitions that are too short to be useful
+    if len(term) < 2:
+        return False
+    
+    if len(definition) < 2:
+        return False
+    
+    # Skips weak or invalid terms
+    invalid_terms = {"a", "an", "the", "what", "this", "is"}
+
+    if term.lower() in invalid_terms:
+        return False
+    
+    return True
