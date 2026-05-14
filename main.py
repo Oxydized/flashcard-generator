@@ -1,4 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from pydantic import BaseModel
+from typing import List
 import tempfile
 import os
 
@@ -7,11 +9,33 @@ from flashcard_service import generate_flashcards
 app = FastAPI()
 ALLOWED_EXTENSIONS = [".txt", ".docx", ".pdf"]
 
+class Flashcard(BaseModel):
+    front: str
+    back: str
+
+class ImportantDuplicate(BaseModel):
+    term: str
+    original_definition: str
+    new_definition: str
+
+class SkippedLine(BaseModel):
+    line: str
+    reason: str
+
+class FlashcardResponse(BaseModel):
+    success: bool
+    filename: str
+    total_cards: int
+    duplicates_skipped: int
+    important_duplicates: List[ImportantDuplicate]
+    skipped_lines: List[SkippedLine]
+    cards: List[Flashcard]
+
 @app.get("/")
 def root():
     return {"message": "Flashcard API running"}
 
-@app.post("/generate-flashcards")
+@app.post("/generate-flashcards", response_model=FlashcardResponse)
 async def generate_flashcards_from_file(file: UploadFile = File(...)):
     # Get uploaded file extension, such as .txt, .docx, or .pdf
     file_extension = os.path.splitext(file.filename)[1]

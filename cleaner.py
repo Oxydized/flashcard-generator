@@ -17,18 +17,37 @@ def clean_term(term):
 def normalize_term(term):
     return term.strip().lower()
 
+def remove_awkward_leading_words(definition):
+    awkward_starts = [
+        "Is ",
+    ]
+
+    for phrase in awkward_starts:
+        if definition.startswith(phrase):
+            definition = definition[len(phrase):]
+
+    return definition
+
+
 def clean_definition(definition):
-    
-    # Removes repeated spaces
+    # Remove repeated spaces
     definition = " ".join(definition.split())
 
-    # Capitalizes first letter
-    definition = definition[0].upper() + definition[1:]
+    # Capitalize first letter first
+    if definition:
+        definition = definition[0].upper() + definition[1:]
 
-    # Adds ending punctuation if missing
+    # Remove awkward leading phrases
+    definition = remove_awkward_leading_words(definition)
+
+    # Capitalize again after cleanup
+    if definition:
+        definition = definition[0].upper() + definition[1:]
+
+    # Add punctuation if missing
     if not definition.endswith((".", "!", "?")):
         definition += "."
-    
+
     return definition
 
 # Validates data before storage
