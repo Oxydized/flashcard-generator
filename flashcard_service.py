@@ -3,20 +3,6 @@ from cleaner import normalize_term, clean_definition, is_valid_card
 from parser import is_question_line, parse_line, get_skip_reason
 from duplicate_checker import definitions_are_similar
 
-# List to store flashcards
-cards = [] 
-
-# Tracks terms already added
-seen_terms = {}
-
-# Stores possible important duplicates for review
-duplicate_cards = []
-
-# Counter for duplicates that were skipped
-skipped_duplicates = 0 
-
-# Controls how flashcard questions are worded
-question_style = "define"
 
 def generate_question(term, style="define"):
     if style == "define":
@@ -35,18 +21,25 @@ def generate_question(term, style="define"):
         return f'Define the term "{term}".'
     
 
-def add_qa_card(question, answer):
+def add_qa_card(cards, question, answer):
     card = {
         "front": question.strip(),
         "back": clean_definition(answer)
     }
+
     cards.append(card)
 
 
-def add_card(term, definition):
-    global skipped_duplicates
-
-    if is_valid_card(term,definition):
+def add_card(
+        cards,
+        seen_terms,
+        duplicate_cards,
+        skipped_data,
+        term,
+        definition,
+        question_style="define"
+):
+    if is_valid_card(term, definition):
         definition = clean_definition(definition)
 
         card = {
@@ -59,12 +52,14 @@ def add_card(term, definition):
         if term_key not in seen_terms:
             seen_terms[term_key] = definition.lower()
             cards.append(card)
+
         else:
             if seen_terms[term_key] == definition.lower():
-                skipped_duplicates += 1
+                skipped_data["duplicates_skipped"] += 1
 
             elif definitions_are_similar(seen_terms[term_key], definition):
-                skipped_duplicates += 1
+                skipped_data["duplicates_skipped"] += 1
+
             else:
                 duplicate_cards.append({
                     "term": term,
@@ -72,18 +67,15 @@ def add_card(term, definition):
                     "new_definition": definition
                 })
 
-
 def generate_flashcards(file_name):
-    global cards
-    global seen_terms
-    global duplicate_cards
-    global skipped_duplicates
-
-    cards.clear()
-    seen_terms.clear()
-    duplicate_cards.clear()
-    skipped_duplicates = 0
+    cards = []
+    seen_terms = {}
+    duplicate_cards = []
+    skipped_data = {
+        "duplicates_skipped": 0
+    }
     skipped_lines = []
+    question_style = "define"
 
     lines = load_file_text(file_name)
 
@@ -91,6 +83,7 @@ def generate_flashcards(file_name):
         return None
     
     i = 0
+
     while i < len(lines):
         line = lines[i].strip()
 
@@ -112,7 +105,7 @@ def generate_flashcards(file_name):
 
                 # Avoid pairing question with another question
                 if not is_question_line(next_line):
-                    add_qa_card(line, next_line)
+                    add_qa_card(cards, line, next_line)
 
                     # Skip both question and answer
                     i = j + 1 
@@ -125,16 +118,25 @@ def generate_flashcards(file_name):
                 "line": line,
                 "reason": get_skip_reason(line)
             })
+
             i += 1
             continue
 
-        add_card(term, definition)
+        add_card(
+            cards,
+            seen_terms,
+            duplicate_cards,
+            skipped_data,
+            term,
+            definition,
+            question_style
+        )
 
         i += 1
 
     return {
         "cards": cards,
-        "duplicates_skipped": skipped_duplicates,
+        "duplicates_skipped": skipped_data["duplicates_skipped"],
         "important_duplicates": duplicate_cards,
         "skipped_lines": skipped_lines
     }
