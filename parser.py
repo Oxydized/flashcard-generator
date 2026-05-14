@@ -5,6 +5,7 @@ def is_question_line(line):
 
 def parse_pattern_line(line, separator):
     term, definition = line.split(separator, 1)
+    definition = separator.strip() + " " + definition
 
     term = clean_term(term)
     definition = definition.strip()
