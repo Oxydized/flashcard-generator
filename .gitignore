@@ -1,4 +1,18 @@
-__pycache__/
-*.pyc
+# Python
 .venv/
+__pycache__/
+.pytest_cache/
+
+# Angular / Node
+node_modules/
+.angular/
+dist/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+
+# Output
 flashcards.csv
