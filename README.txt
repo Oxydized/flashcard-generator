@@ -1,10 +1,16 @@
-This project started as a way to practice backend parsing and gradually evolved into a full interactive study application.
-
 # Flashcard Generator
 
-An interactive flashcard generation and study application built with Python and Streamlit.
+A modular flashcard generation application built with Python, Streamlit, and FastAPI.
 
-This project allows users to upload `.txt` or `.docx` notes and automatically generate study flashcards through rule-based parsing and validation.
+This project allows users to upload `.txt`, `.docx`, or `.pdf` notes and automatically generate study flashcards using rule-based parsing, validation, duplicate detection, skipped-line reporting, and question-answer extraction.
+
+The project originally started as a backend parsing exercise and gradually evolved into a reusable document-processing engine with both a Streamlit frontend and a FastAPI backend API.
+
+---
+
+## Key Technologies
+
+Python • FastAPI • Streamlit • File Processing • REST APIs • Parser Design
 
 ---
 
@@ -12,74 +18,87 @@ This project allows users to upload `.txt` or `.docx` notes and automatically ge
 
 ## Flashcard Generation
 
-- Upload `.txt` and `.docx` files
+- Upload `.txt`, `.docx`, and `.pdf` files
 - Automatically parse notes into flashcards
 - Supports multiple input formats
 - Cleans and validates generated cards
 - Detects duplicate and fuzzy duplicate flashcards
-- Exports flashcards as downloadable CSV files
+- Tracks skipped or unsupported lines with reason classifications
+- Supports question-and-answer pair parsing
+- Exports generated flashcards as CSV files
 
 ---
 
-## Study Interface
+## Streamlit Study Interface
 
-- Interactive Streamlit web interface
-- One-card-at-a-time study mode
+- Interactive browser-based study mode
+- One-card-at-a-time flashcard review
 - Previous / Next card navigation
 - Show / Hide answer toggle
-- Shuffle flashcards during study mode
-- Reset flashcards back to original generated order
+- Shuffle flashcards
+- Reset cards back to original generated order
 - Flashcard counter display
-- Styled flashcard UI
-- Optional flashcard table view
+- Optional generated flashcard table view
+- CSV download support
+- Expandable skipped-line viewer
 
 ---
 
-## Parser Transparency
+## FastAPI Backend
 
-- Tracks skipped/unparsed lines
-- Displays skipped lines inside expandable UI section
-- Displays skipped lines with reason classifications
-- Helps users identify unsupported formatting
-- Improves parser debugging and transparency
-- Shows duplicate skip counts
+- API endpoint for file uploads
+- Accepts `.txt`, `.docx`, and `.pdf` files
+- Validates supported file types
+- Processes uploaded files through a reusable flashcard generation engine
+- Returns structured JSON responses
+- Includes duplicate counts, skipped lines, and generated cards
+- Uses temporary file handling for uploads
+- Includes error handling for unsupported file types
+
+---
+
+# Supported File Types
+
+```text
+.txt
+.docx
+.pdf
+```
 
 ---
 
 # Supported Input Formats
 
-The parser currently supports:
+The parser currently supports formats such as:
 
-```text
-Term: definition
-```
+- Term: definition
+- Term is definition
+- Term has definition
+- Term consists of definition
+- Term provides definition
+- Term determines definition
+- Term translates definition
+- Term stores definition
+- Term manages definition
+- Term uses definition
+- Term forwards definition
+- Term connects definition
 
-```text
-Term has definition
-Term consists of definition
-Term provides definition
-Term determines definition
-Term translates definition
-Term stores definition
-```
+Example: Firewall: A device or software that filters network traffic based on security rules.
+Example: A subnet is a smaller network created by dividing a larger network.
 
-Example:
+---
 
-```text
-Firewall: A device or software that filters network traffic based on security rules.
-```
+# Question and Answer Support
 
-And:
+The application also supports basic question-and-answer formatting:
 
-```text
-Term is definition
-```
+Example: 
 
-Example:
+What port does HTTPS use?
+Port 443 is commonly used for HTTPS traffic.
 
-```text
-A subnet is a smaller network created by dividing a larger network.
-```
+The parser automatically pairs supported questions with the next valid answer line.
 
 ---
 
@@ -87,8 +106,12 @@ A subnet is a smaller network created by dividing a larger network.
 
 - Python
 - Streamlit
+- FastAPI
 - Pandas
 - python-docx
+- pypdf
+- python-multipart
+- Uvicorn
 - difflib
 
 ---
@@ -98,10 +121,17 @@ A subnet is a smaller network created by dividing a larger network.
 ```text
 flashcard-generator/
 ├── app.py
+├── main.py
 ├── streamlit_app.py
+├── flashcard_service.py
+├── file_loader.py
+├── parser.py
+├── cleaner.py
+├── duplicate_checker.py
+├── csv_exporter.py
 ├── requirements.txt
 ├── README.md
-└── sample_notes.txt
+└── sample notes files
 ```
 
 ---
@@ -120,6 +150,18 @@ Navigate into the project folder:
 cd flashcard-generator
 ```
 
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
 Install dependencies:
 
 ```bash
@@ -128,7 +170,7 @@ python -m pip install -r requirements.txt
 
 ---
 
-# How to Run
+# How to Run the Streamlit App
 
 Start the Streamlit application:
 
@@ -136,48 +178,87 @@ Start the Streamlit application:
 python -m streamlit run streamlit_app.py
 ```
 
-The application will automatically open in your browser.
+The Streamlit app will automatically open in your browser.
+
+## Users can:
+
+- upload study notes
+- generate flashcards
+- review flashcards interactively
+- shuffle and reset cards
+- download generated CSV files
 
 ---
 
-# Example Input
+# How to Run the FastAPI Backend
 
-```text
-Firewall: A device or software that filters network traffic based on security rules.
+- Start the FastAPI development server:
 
-A subnet is a smaller network created by dividing a larger network.
-
-Encryption: The process of converting data into a secure format.
+```bash
+python -m uvicorn main:app --reload
 ```
+
+Open the interactive API documentation:
+http://127.0.0.1:8000/docs
+
+---
+
+# API Endpoint
+POST /generate-flashcards
+
+Accepts an uploaded .txt, .docx, or .pdf file and returns generated flashcards as JSON.
+
+Example Response: 
+
+{
+  "success": true,
+  "filename": "notes.txt",
+  "total_cards": 10,
+  "duplicates_skipped": 2,
+  "important_duplicates": [],
+  "skipped_lines": [],
+  "cards": [
+    {
+      "front": "Define the term \"Firewall\".",
+      "back": "A security device that filters network traffic."
+    }
+  ]
+}
+
+Unsupported file types return a structured API error response.
 
 ---
 
 # Current Capabilities
 
-## Backend
+## Backend 
 
 - Modular parser architecture
-- Reusable flashcard generation functions
-- Reusable pattern-based parser helper
-- Expanded sentence pattern support
-- Skipped-line reason classification
-- Input validation
+- Reusable flashcard generation engine
+- TXT, DOCX, and PDF file loading
+- Pattern-based parsing
+- Question-and-answer parsing
+- Parser confidence scoring
+- Input cleaning and validation
 - Duplicate detection
 - Fuzzy duplicate comparison
-- CSV export support
-- Skipped-line tracking
+- Skipped-line reason classification
+- Stateless backend refactor for safer API usage
+- FastAPI upload endpoint
+- API file validation and error handling
+- Temporary file processing pipeline
 
----
 
 ## Frontend
 
 - Interactive Streamlit UI
-- Shuffle and reset study controls
+- File upload interface
+- Flashcard study mode
+- Shuffle and reset controls
 - Duplicate skip count display
 - Skipped-line reason display
 - Session state management
 - Flashcard navigation
-- Responsive layout using Streamlit columns
 - Styled HTML/CSS flashcards
 - CSV downloads
 - Expandable skipped-line viewer
@@ -186,15 +267,13 @@ Encryption: The process of converting data into a secure format.
 
 # Future Improvements
 
-## Parser Enhancements
+## Parser Enhancements  
 
-- Question/answer pair parsing
 - Multi-file upload support
-- Parser precision tuning
-- Better parser confidence scoring
 - Improved natural-language parsing
-
----
+- Better parser confidence scoring
+- More advanced Q&A pairing
+- Better handling of messy classroom notes
 
 ## Study Features
 
@@ -203,27 +282,26 @@ Encryption: The process of converting data into a secure format.
 - Multiple-choice study mode
 - Spaced repetition
 - Saved study decks
+- Study statistics
 
----
+## API Improvements
+
+- Pydantic response models
+- More detailed error responses
+- Automated API testing
+- Authentication support
+- Frontend integration with React or Angular
+- Optional database support for saved decks
 
 ## File Support
 
-- PDF support
-- OCR/image support
+- OCR/image-based PDF support
 - Better DOCX formatting support
+- Support for multiple uploaded files
 
 ---
 
-## UI Improvements
-
-- Flashcard flip animations
-- Dark/light theme support
-- Progress tracking
-- Study statistics
-
----
-
-## AI Integration (Planned)
+# AI Integration Planned
 
 Future AI-assisted functionality may include:
 
@@ -234,7 +312,8 @@ Future AI-assisted functionality may include:
 - AI-generated quizzes
 - Summarization of lecture notes into study decks
 
-The current system intentionally uses deterministic rule-based parsing first to establish strong backend architecture and parser transparency before introducing AI-assisted enhancements.
+The current system intentionally uses deterministic rule-based parsing first 
+to establish strong backend architecture and parser transparency before introducing AI-assisted enhancements.
 
 ---
 
@@ -243,16 +322,17 @@ The current system intentionally uses deterministic rule-based parsing first to 
 This project was built to strengthen skills in:
 
 - Python backend development
+- API development with FastAPI
 - Frontend UI development with Streamlit
-- State management
 - File processing
 - Parser design
+- State management
 - Software architecture
 - Debugging and validation systems
 - Git/GitHub workflow
 - Building user-focused study tools
 
----
+--- 
 
 # Author
 
