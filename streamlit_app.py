@@ -5,7 +5,7 @@ import os
 import random
 
 # Imports the backend flashcard generation function from app.py
-from app import generate_flashcards
+from flashcard_service import generate_flashcards
 
 
 # Custom CSS used to slightly improve Streamlit's default file uploader layout
