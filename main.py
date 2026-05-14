@@ -1,12 +1,20 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 import tempfile
 import os
 
 from flashcard_service import generate_flashcards
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 ALLOWED_EXTENSIONS = [".txt", ".docx", ".pdf"]
 
 class Flashcard(BaseModel):
