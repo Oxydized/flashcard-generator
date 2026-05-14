@@ -42,7 +42,7 @@ async def generate_flashcards_from_file(file: UploadFile = File(...)):
     if file_extension.lower() not in ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=400,
-            detail="Unsupported file type. Plase upload a .txt, .docx or .pdf file."
+            detail="Unsupported file type. Please upload a .txt, .docx, or .pdf file."
         )
 
     # Save uploaded file temporarily so existing backend can process it
