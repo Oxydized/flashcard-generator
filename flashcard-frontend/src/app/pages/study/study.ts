@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FlashcardService } from "../../services/flashcard";
 
@@ -58,5 +58,29 @@ export class Study {
     return this.currentCard.front.split(
       `"${this.currentCard.term}"`
     )[1];
+  }
+
+    @HostListener('window:keydown', ['$event'])
+      handleKeyboardEvent(event: KeyboardEvent) {
+
+    // Prevent spacebar from scrolling page
+    if (event.code === 'Space') {
+      event.preventDefault();
+    }
+
+    // Show / Hide Answer
+    if (event.code === 'Space') {
+      this.toggleAnswer();
+    }
+
+    // Next Card
+    if (event.code === 'ArrowRight') {
+      this.nextCard();
+    }
+
+    // Previous Card
+    if (event.code === 'ArrowLeft') {
+      this.previousCard();
+    }
   }
 }
