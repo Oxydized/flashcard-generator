@@ -1,0 +1,22 @@
+<main class="app-container">
+  <h1>Flashcard Generator</h1>
+
+  <p>Upload a .txt, .docx, or .pdf file to generate flashcards.</p>
+
+  <input 
+    type="file"
+    (change)="onFileSelected($event)" 
+  />
+
+  <button 
+    type="button"
+    [disabled]="!selectedFile || isLoading"
+    (click)="generateFlashcards()"
+  >
+    {{ isLoading ? 'Generating...' : 'Generate Flashcards' }}
+  </button>
+
+  <p *ngIf="isLoading">
+    Generating flashcards...
+  </p>
+</main>

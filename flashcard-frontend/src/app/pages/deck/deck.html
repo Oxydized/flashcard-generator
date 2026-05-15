@@ -1,0 +1,14 @@
+<main class="app-container">
+  <h1>Generated {{ totalCards }} Flashcards</h1>
+
+  <section *ngIf="flashcards.length > 0">
+    <div *ngFor="let card of flashcards" class="flashcard">
+      <h3>{{ card.front }}</h3>
+      <p>{{ card.back }}</p>
+    </div>
+  </section>
+
+  <p *ngIf="flashcards.length === 0">
+    No flashcards loaded yet.
+  </p>
+</main>
