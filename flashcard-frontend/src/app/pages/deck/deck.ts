@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FlashcardService } from "../../services/flashcard";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-deck",
@@ -9,12 +10,20 @@ import { FlashcardService } from "../../services/flashcard";
   styleUrl: "./deck.css",
   imports: [CommonModule],
 })
+
+
 export class Deck {
   flashcards: any[] = [];
   totalCards = 0;
 
-  constructor(private flashcardService: FlashcardService) {
+  constructor(
+    private flashcardService: FlashcardService,
+    private router: Router
+  ) {
     this.flashcards = this.flashcardService.getFlashcards();
     this.totalCards = this.flashcardService.getTotalCards();
   }
+  startStudy() {
+  this.router.navigate(['/study', 'generated']);
+}
 }

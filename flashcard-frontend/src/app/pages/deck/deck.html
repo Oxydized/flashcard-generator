@@ -1,6 +1,10 @@
 <main class="app-container">
   <h1>Generated {{ totalCards }} Flashcards</h1>
 
+  <button type="button" (click)="startStudy()">
+  Start Study Session
+  </button>
+
   <section *ngIf="flashcards.length > 0">
     <div *ngFor="let card of flashcards" class="flashcard">
       <h3>{{ card.front }}</h3>
