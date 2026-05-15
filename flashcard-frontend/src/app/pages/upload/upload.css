@@ -1,17 +1,114 @@
-.app-container {
-  max-width: 800px;
-  margin: 80px auto;
-  padding: 24px;
+.upload-page {
+  min-height: 100vh;
+  background: var(--page-bg);
+  padding: 72px 24px;
+  color: var(--text-main);
+}
+
+.upload-shell {
+  max-width: 760px;
+  margin: 0 auto;
   text-align: center;
-  font-family: Arial, sans-serif;
 }
 
-input {
-  margin-top: 20px;
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
 }
 
-button {
-  margin-left: 12px;
-  padding: 8px 14px;
+.upload-shell h1 {
+  margin: 0;
+  font-size: 2.4rem;
+}
+
+.upload-subtitle {
+  margin: 18px auto 32px;
+  max-width: 560px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.upload-card {
+  background: var(--page-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 18px 45px rgba(23, 32, 51, 0.1);
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+  border: 2px dashed var(--border-soft);
+  border-radius: 20px;
+  background: var(--surface-subtle);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover {
+  color: var(--text-muted);
+  background: var(--surface-hover);
+}
+
+.upload-dropzone input {
+  display: none;
+}
+
+.upload-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--page-bg);
+  color: var(--text-main);
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.upload-dropzone strong {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.upload-dropzone small {
+  color: #52627a;
+}
+
+.generate-button {
+  margin-top: 24px;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 26px;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.generate-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.generate-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.loading-text {
+  margin: 16px 0 0;
+  color: var(--text-main);
+  font-weight: 600;
 }

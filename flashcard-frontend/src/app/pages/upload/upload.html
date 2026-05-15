@@ -1,22 +1,44 @@
-<main class="app-container">
-  <h1>Flashcard Generator</h1>
+<main class="upload-page">
+  <section class="upload-shell">
+    <p class="eyebrow">Flashcard Generator</p>
 
-  <p>Upload a .txt, .docx, or .pdf file to generate flashcards.</p>
+    <h1>Turn Your Notes Into Flashcards</h1>
 
-  <input 
-    type="file"
-    (change)="onFileSelected($event)" 
-  />
+    <p class="upload-subtitle">
+      Upload a .txt, .docx, or .pdf file and generate a study-ready deck.
+    </p>
 
-  <button 
-    type="button"
-    [disabled]="!selectedFile || isLoading"
-    (click)="generateFlashcards()"
-  >
-    {{ isLoading ? 'Generating...' : 'Generate Flashcards' }}
-  </button>
+    <section class="upload-card">
+      <label class="upload-dropzone">
+        <input 
+          type="file"
+          accept=".txt,.docx,.pdf"
+          (change)="onFileSelected($event)" 
+        />
 
-  <p *ngIf="isLoading">
-    Generating flashcards...
-  </p>
+        <span class="upload-icon">↑</span>
+
+        <strong>
+          {{ selectedFile ? selectedFile.name : 'Choose a file to upload' }}
+        </strong>
+
+        <small>
+          {{ selectedFile ? 'Ready to generate flashcards' : 'TXT, DOCX, or PDF supported' }}
+        </small>
+      </label>
+
+      <button 
+        type="button"
+        class="generate-button"
+        [disabled]="!selectedFile || isLoading"
+        (click)="generateFlashcards()"
+      >
+        {{ isLoading ? 'Generating...' : 'Generate Flashcards' }}
+      </button>
+
+      <p *ngIf="isLoading" class="loading-text">
+        Creating your deck...
+      </p>
+    </section>
+  </section>
 </main>

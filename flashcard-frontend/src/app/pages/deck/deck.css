@@ -1,17 +1,132 @@
-.app-container {
-  max-width: 800px;
-  margin: 80px auto;
-  padding: 24px;
+.deck-page {
+  min-height: 100vh;
+  background: var(--page-bg);
+  padding: 56px 24px;
+  color: var(--text-main);
+}
+
+.deck-shell {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.deck-header {
   text-align: center;
-  font-family: Arial, sans-serif;
+  margin-bottom: 24px;
 }
 
-input {
-  margin-top: 20px;
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
 }
 
-button {
-  margin-left: 12px;
-  padding: 8px 14px;
+.deck-header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.deck-subtitle {
+  margin: 14px auto 0;
+  max-width: 560px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.deck-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.primary-button {
+  border: none;
+  border-radius: 999px;
+  padding: 13px 26px;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+}
+
+.card-preview-list {
+  display: grid;
+  gap: 16px;
+}
+
+.preview-card {
+  background: var(--page-bg);
+  border: 1px solid var(--preview-border);
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.08);
+
+  transition: all 0.2s ease;
+}
+
+.preview-card:hover {
+  transform: translateY(-3px);
+}
+
+.card-label {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.preview-card h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.35;
+
+  margin-bottom: 14px;
+}
+
+.answer-label {
+  margin-top: 18px;
+}
+
+.answer-text {
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.secondary-button {
+  justify-self: center;
+  margin-top: 10px;
+
+  border: 1px solid #dfe6f2;
+  border-radius: 999px;
+  padding: 12px 22px;
+
+  background: var(--page-bg);
+  color: var(--text-main);
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+  transform: translateY(-1px);
 }

@@ -50,6 +50,7 @@
         <div class="keyboard-hints">
         <div>← → Navigate</div>
         <div>[ Space ] Show/Hide</div>
+        <div>↓ Review • ↑ Knew It</div>
         </div>
       </div>
     </section>
@@ -81,7 +82,25 @@
         Next →
       </button>
     </footer>
+      <div class="study-feedback">
 
+      <button
+        type="button"
+        class="review-button"
+        (click)="markReviewAgain()"
+      >
+        ↓ Review
+      </button>
+
+      <button
+        type="button"
+        class="known-button"
+        (click)="markKnown()"
+      >
+        ↑ Knew It
+      </button>
+
+    </div>
   </section>
 
   <ng-template #noCards>

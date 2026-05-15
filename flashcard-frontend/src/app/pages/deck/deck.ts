@@ -25,5 +25,16 @@ export class Deck {
   }
   startStudy() {
   this.router.navigate(['/study', 'generated']);
+  }
+  previewLimit = 5;
+  showAllCards = false;
+
+  get visibleCards() {
+    return this.showAllCards ? this.flashcards : this.flashcards.slice(0, this.previewLimit);
+  }
+
+  toggleShowAllCards() {
+    this.showAllCards = !this.showAllCards;
+  }
 }
-}
+

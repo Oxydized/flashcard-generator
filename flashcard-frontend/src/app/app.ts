@@ -8,4 +8,10 @@ import { RouterOutlet } from "@angular/router";
   styleUrl: "./app.css",
   imports: [RouterOutlet],
 })
-export class App {}
+export class App {
+  isDarkMode = false;
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+  }
+}

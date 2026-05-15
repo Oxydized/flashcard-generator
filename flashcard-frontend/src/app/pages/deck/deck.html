@@ -1,18 +1,63 @@
-<main class="app-container">
-  <h1>Generated {{ totalCards }} Flashcards</h1>
+<main class="deck-page">
+  <section class="deck-shell">
 
-  <button type="button" (click)="startStudy()">
-  Start Study Session
-  </button>
+    <header class="deck-header">
+      <p class="eyebrow">Deck Created</p>
 
-  <section *ngIf="flashcards.length > 0">
-    <div *ngFor="let card of flashcards" class="flashcard">
-      <h3>{{ card.front }}</h3>
-      <p>{{ card.back }}</p>
-    </div>
+      <h1>Generated {{ totalCards }} Flashcards</h1>
+
+      <p class="deck-subtitle">
+        Review your generated cards, then start a focused study session.
+      </p>
+    </header>
+
+    <section class="deck-actions">
+      <button
+        type="button"
+        class="primary-button"
+        (click)="startStudy()"
+      >
+        Start Study Session
+      </button>
+    </section>
+
+    <section
+      *ngIf="flashcards.length > 0"
+      class="card-preview-list"
+    >
+
+      <article
+        *ngFor="let card of visibleCards"
+        class="preview-card"
+      >
+        <p class="card-label">Question</p>
+
+        <h2>{{ card.front }}</h2>
+
+        <p class="card-label answer-label">Answer</p>
+
+        <p class="answer-text">
+          {{ card.back }}
+        </p>
+      </article>
+
+      <button
+        *ngIf="flashcards.length > previewLimit"
+        type="button"
+        class="secondary-button"
+        (click)="toggleShowAllCards()"
+      >
+        {{ showAllCards ? 'Show Fewer Cards' : 'View All Cards' }}
+      </button>
+
+    </section>
+
+    <p
+      *ngIf="flashcards.length === 0"
+      class="empty-state"
+    >
+      No flashcards loaded yet. Generate a deck first.
+    </p>
+
   </section>
-
-  <p *ngIf="flashcards.length === 0">
-    No flashcards loaded yet.
-  </p>
 </main>

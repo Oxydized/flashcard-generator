@@ -13,6 +13,8 @@ export class Study {
   flashcards: any[] = [];
   currentIndex = 0;
   showAnswer = false;
+  knownCards: number[] = [];
+  reviewCards: number[] = [];
 
   constructor(private flashcardService: FlashcardService) {
     this.flashcards = this.flashcardService.getFlashcards();
@@ -82,5 +84,52 @@ export class Study {
     if (event.code === 'ArrowLeft') {
       this.previousCard();
     }
+
+    // Prevent arrow from scrolling page
+    if (event.code === 'ArrowUp') {
+      event.preventDefault();
+    }
+
+    // Mark Known
+    if (event.code === 'ArrowUp') {
+      this.markKnown();
+    }
+
+    // Prevent arrow from scrolling page
+    if (event.code === 'ArrowDown') {
+      event.preventDefault();
+    }
+
+    // Review Again
+    if (event.code === 'ArrowDown') {
+      this.markReviewAgain();
+    }
+  }
+    markKnown() {
+
+    if (!this.knownCards.includes(this.currentIndex)) {
+      this.knownCards.push(this.currentIndex);
+    }
+
+    // Remove from review list if previously marked
+    this.reviewCards = this.reviewCards.filter(
+      index => index !== this.currentIndex
+    );
+
+    this.nextCard();
+  }
+
+  markReviewAgain() {
+
+    if (!this.reviewCards.includes(this.currentIndex)) {
+      this.reviewCards.push(this.currentIndex);
+    }
+
+    // Remove from known list if previously marked
+    this.knownCards = this.knownCards.filter(
+      index => index !== this.currentIndex
+    );
+
+    this.nextCard();
   }
 }

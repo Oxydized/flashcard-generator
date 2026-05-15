@@ -1,1 +1,66 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --page-bg: #f5f7fb;
+  --card-bg: #ffffff;
+  --text-main: #172033;
+  --text-muted: #52627a;
+  --border-soft: #e6ebf3;
+
+  --primary: #172033;
+  --primary-text: #ffffff;
+
+  --accent-blue: #2563eb;
+
+  --button-primary-bg: #172033;
+  --button-primary-text: #ffffff;
+
+  --surface-subtle: #e5e7eb;
+  --surface-hover: #dbe1e8;
+
+  --progress-track: #dfe6f2;
+  --progress-fill: #172033;
+
+  --preview-border: #e6ebf3;
+}
+
+.dark {
+  --page-bg: #0f172a;
+  --card-bg: #111827;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-soft: #334155;
+
+  --primary: #f8fafc;
+  --primary-text: #0f172a;
+
+  --accent-blue: #60a5fa;
+
+  --button-primary-bg: #2563eb;
+  --button-primary-text: #ffffff;
+
+  --surface-subtle: #172033;
+  --surface-hover: #1e293b;
+
+  --progress-track: #334155;
+  --progress-fill: #60a5fa;
+
+  --preview-border: rgba(255,255,255,0.14);
+}
+
+* {
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--page-bg);
+}
+

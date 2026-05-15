@@ -1,1 +1,19 @@
-<router-outlet></router-outlet>
+<div class="app-shell" [class.dark]="isDarkMode">
+
+  <label class="theme-switch">
+    <span class="theme-label">
+      {{ isDarkMode ? 'Dark' : 'Light' }}
+    </span>
+
+    <input
+      type="checkbox"
+      [checked]="isDarkMode"
+      (change)="toggleDarkMode()"
+    />
+
+    <span class="slider"></span>
+  </label>
+
+  <router-outlet></router-outlet>
+
+</div>
