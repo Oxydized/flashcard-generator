@@ -1,33 +1,91 @@
-<main class="app-container">
-  <h1>Study Mode</h1>
+<main class="study-page">
+  <section *ngIf="flashcards.length > 0; else noCards" class="study-shell">
 
-  <section *ngIf="flashcards.length > 0; else noCards">
-    <p>
-      Card {{ currentIndex + 1 }} of {{ flashcards.length }}
-    </p>
+    <header class="study-header">
+      <div>
+        <p class="eyebrow">Study Mode</p>
+        <h1>Review Your Flashcards</h1>
+      </div>
 
-    <div class="flashcard">
-      <h3>{{ currentCard.front }}</h3>
-
-      <p *ngIf="showAnswer">
-        {{ currentCard.back }}
+      <p class="card-count">
+        Card {{ currentIndex + 1 }} of {{ flashcards.length }}
       </p>
+    </header>
+
+    <div class="progress-track">
+      <div
+        class="progress-fill"
+        [style.width.%]="((currentIndex + 1) / flashcards.length) * 100"
+      ></div>
     </div>
 
-    <button type="button" (click)="previousCard()" [disabled]="currentIndex === 0">
-      Back
-    </button>
+    <section class="flashcard-viewer">
+      <div class="flashcard">
+        <p class="card-label">Question</p>
 
-    <button type="button" (click)="toggleAnswer()">
-      {{ showAnswer ? 'Hide Answer' : 'Show Answer' }}
-    </button>
+    <h2
+      class="question-text"
+      *ngIf="currentCard.term; else plainQuestion"
+    >
+      {{ getQuestionPrefix() }}
+      <span class="term-highlight">"{{ currentCard.term }}"</span>{{ getQuestionSuffix() }}
+    </h2>
 
-    <button type="button" (click)="nextCard()" [disabled]="currentIndex === flashcards.length - 1">
-      Next
-    </button>
+    <ng-template #plainQuestion>
+      <h2 class="question-text">
+        {{ currentCard.front }}
+      </h2>
+    </ng-template>
+
+        <ng-template #plainQuestion>
+          <h1 class="question-text">
+            {{ currentCard.front }}
+          </h1>
+        </ng-template>
+
+        <div *ngIf="showAnswer" class="answer-section">
+          <p class="card-label">Answer</p>
+          <h2>{{ currentCard.back }}</h2>
+        </div>
+      </div>
+    </section>
+
+    <footer class="study-controls">
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="previousCard()"
+        [disabled]="currentIndex === 0"
+      >
+        Back
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="toggleAnswer()"
+      >
+        {{ showAnswer ? 'Hide Answer' : 'Show Answer' }}
+      </button>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="nextCard()"
+        [disabled]="currentIndex === flashcards.length - 1"
+      >
+        Next
+      </button>
+    </footer>
+
   </section>
 
   <ng-template #noCards>
-    <p>No flashcards loaded. Generate a deck first.</p>
+    <main class="study-page">
+      <section class="empty-state">
+        <h1>No flashcards loaded</h1>
+        <p>Generate a deck first, then start a study session.</p>
+      </section>
+    </main>
   </ng-template>
 </main>

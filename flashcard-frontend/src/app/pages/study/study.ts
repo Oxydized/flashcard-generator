@@ -39,4 +39,24 @@ export class Study {
       this.showAnswer = false;
     }
   }
+
+  getQuestionPrefix(): string {
+    if (!this.currentCard?.term) {
+      return this.currentCard?.front || '';
+    }
+
+    return this.currentCard.front.split(
+      `"${this.currentCard.term}"`
+    )[0];
+  }
+
+  getQuestionSuffix(): string {
+    if (!this.currentCard?.term) {
+      return '';
+    }
+
+    return this.currentCard.front.split(
+      `"${this.currentCard.term}"`
+    )[1];
+  }
 }
