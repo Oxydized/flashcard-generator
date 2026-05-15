@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
 import tempfile
 import os
@@ -18,6 +18,7 @@ app.add_middleware(
 ALLOWED_EXTENSIONS = [".txt", ".docx", ".pdf"]
 
 class Flashcard(BaseModel):
+    term: Optional[str] = None
     front: str
     back: str
 

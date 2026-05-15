@@ -43,6 +43,7 @@ def add_card(
         definition = clean_definition(definition)
 
         card = {
+            "term": term,
             "front": generate_question(term, question_style),
             "back": definition
         }
