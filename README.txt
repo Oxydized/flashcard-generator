@@ -1,16 +1,16 @@
 # Flashcard Generator
 
-A modular flashcard generation application built with Python, Streamlit, and FastAPI.
+A full-stack flashcard study platform built with FastAPI and Angular that converts unstructured notes into interactive study decks.
 
-This project allows users to upload `.txt`, `.docx`, or `.pdf` notes and automatically generate study flashcards using rule-based parsing, validation, duplicate detection, skipped-line reporting, and question-answer extraction.
+The application supports `.txt`, `.docx`, and `.pdf` uploads, processes notes through a modular parsing pipeline, and provides a modern study experience featuring deck previews, keyboard shortcuts, progress tracking, review workflows, and dark/light mode support.
 
-The project originally started as a backend parsing exercise and gradually evolved into a reusable document-processing engine with both a Streamlit frontend and a FastAPI backend API.
+The project originally began as a backend parsing exercise and evolved into a multi-page study application focused on educational UX, frontend architecture, and scalable backend processing.
 
 ---
 
 ## Key Technologies
 
-Python • FastAPI • Streamlit • File Processing • REST APIs • Parser Design
+Python • FastAPI • Angular • File Processing • REST APIs • Parser Design • TypeScript • HTML/CSS
 
 ---
 
@@ -29,18 +29,43 @@ Python • FastAPI • Streamlit • File Processing • REST APIs • Parser De
 
 ---
 
-## Streamlit Study Interface
+# Screenshots
 
-- Interactive browser-based study mode
-- One-card-at-a-time flashcard review
-- Previous / Next card navigation
-- Show / Hide answer toggle
-- Shuffle flashcards
-- Reset cards back to original generated order
-- Flashcard counter display
-- Optional generated flashcard table view
-- CSV download support
-- Expandable skipped-line viewer
+## Upload Page (Light Mode)
+
+![Alt Text](https://github.com/Oxydized/flashcard-generator/blob/44c5c3cec6462797060dd620bb6b9300c4235041/Upload%20-%20Light%20Mode.png)
+
+## Study Session (Light Mode)
+
+![Alt Text](https://github.com/Oxydized/flashcard-generator/blob/44c5c3cec6462797060dd620bb6b9300c4235041/Study%20Session%20-%20Light%20Mode.png)
+
+## Study Session (Dark Mode)
+
+![Alt Text](https://github.com/Oxydized/flashcard-generator/blob/44c5c3cec6462797060dd620bb6b9300c4235041/Study%20Session%20-%20Dark%20Mode.png)
+
+---
+
+## Angular Frontend Features
+ 
+- Upload page
+- Deck preview page
+- Interactive study mode
+- Keyboard shortcuts
+- Knew It / Review workflow
+- Dark/light themes
+- Multi-page SPA routing
+- Shared service-based state management
+
+---
+
+## Streamlit Study Interface (Legacy)
+
+The original frontend prototype was built with Streamlit to rapidly validate:
+- flashcard generation workflows
+- parser behavior
+- study interaction concepts
+
+The project later evolved into a full Angular single-page application frontend.
 
 ---
 
@@ -105,6 +130,9 @@ The parser automatically pairs supported questions with the next valid answer li
 # Technologies Used
 
 - Python
+- TypeScript
+- HTML/CSS
+- Angular
 - Streamlit
 - FastAPI
 - Pandas
@@ -116,7 +144,7 @@ The parser automatically pairs supported questions with the next valid answer li
 
 ---
 
-# Project Structure
+# Project Backend Structure
 
 ```text
 flashcard-generator/
@@ -132,6 +160,20 @@ flashcard-generator/
 ├── requirements.txt
 ├── README.md
 └── sample notes files
+```
+
+# Project Frontend Structure
+
+```text
+flashcard-frontend/
+├── src/
+│   ├── app/
+│   │   ├── pages/
+│   │   │   ├── upload/
+│   │   │   ├── deck/
+│   │   │   └── study/
+│   │   ├── services/
+│   │   └── app.routes.ts
 ```
 
 ---
@@ -248,21 +290,6 @@ Unsupported file types return a structured API error response.
 - API file validation and error handling
 - Temporary file processing pipeline
 
-
-## Frontend
-
-- Interactive Streamlit UI
-- File upload interface
-- Flashcard study mode
-- Shuffle and reset controls
-- Duplicate skip count display
-- Skipped-line reason display
-- Session state management
-- Flashcard navigation
-- Styled HTML/CSS flashcards
-- CSV downloads
-- Expandable skipped-line viewer
-
 ---
 
 # Future Improvements
@@ -290,7 +317,13 @@ Unsupported file types return a structured API error response.
 - More detailed error responses
 - Automated API testing
 - Authentication support
-- Frontend integration with React or Angular
+- Persistent saved decks
+- Dockerization
+- AWS deployment
+- Kubernetes orchestration
+- Mobile responsiveness
+- Spaced repetition
+- AI-assisted study recommendations
 - Optional database support for saved decks
 
 ## File Support
@@ -323,7 +356,7 @@ This project was built to strengthen skills in:
 
 - Python backend development
 - API development with FastAPI
-- Frontend UI development with Streamlit
+- Frontend UI development with Angular and Streamlit
 - File processing
 - Parser design
 - State management
