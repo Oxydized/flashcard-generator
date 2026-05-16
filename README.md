@@ -252,6 +252,7 @@ Accepts an uploaded .txt, .docx, or .pdf file and returns generated flashcards a
 
 Example Response: 
 
+```json
 {
   "success": true,
   "filename": "notes.txt",
@@ -261,11 +262,13 @@ Example Response:
   "skipped_lines": [],
   "cards": [
     {
+      "term": "Firewall",
       "front": "Define the term \"Firewall\".",
       "back": "A security device that filters network traffic."
     }
   ]
 }
+```
 
 Unsupported file types return a structured API error response.
 
