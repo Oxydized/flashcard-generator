@@ -6,7 +6,19 @@
       <header class="study-header">
         <div>
           <p class="eyebrow">Study Mode</p>
-          <h1>Review Your Flashcards</h1>
+
+          <div class="study-title-row">
+            <h1>
+              {{ isWeakReviewMode ? 'Review Weak Cards' : 'Review Your Flashcards' }}
+            </h1>
+
+            <span
+              *ngIf="isWeakReviewMode"
+              class="review-mode-badge"
+            >
+              Focused Review
+            </span>
+          </div>
         </div>
 
         <p class="card-count">
@@ -154,6 +166,8 @@
       <button
         type="button"
         class="primary-button"
+        (click)="reviewWeakCards()"
+        [disabled]="reviewCards.length === 0"
       >
         Review Weak Cards
       </button>
@@ -164,6 +178,15 @@
         (click)="restartSession()"
       >
         Study Again
+      </button>
+
+      <button
+        *ngIf="isWeakReviewMode"
+        type="button"
+        class="secondary-button"
+        (click)="studyFullDeck()"
+      >
+        Restart Full Session
       </button>
 
       <button

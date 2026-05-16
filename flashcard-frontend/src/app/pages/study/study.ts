@@ -16,9 +16,13 @@ export class Study {
   knownCards: number[] = [];
   reviewCards: number[] = [];
   sessionComplete = false;
+  isWeakReviewMode = false;
+  originalFlashcards: any[] = [];
+    
 
   constructor(private flashcardService: FlashcardService) {
     this.flashcards = this.flashcardService.getFlashcards();
+    this.originalFlashcards = [...this.flashcards];
   }
 
   get currentCard() {
@@ -106,7 +110,8 @@ export class Study {
       this.markReviewAgain();
     }
   }
-    markKnown() {
+  
+  markKnown() {
 
     if (!this.knownCards.includes(this.currentIndex)) {
       this.knownCards.push(this.currentIndex);
@@ -251,6 +256,47 @@ export class Study {
     }
 
     return classes;
+  }
+
+  reviewWeakCards() {
+    const sourceDeck = this.isWeakReviewMode
+      ? this.flashcards
+      : this.originalFlashcards;
+
+    const reviewableCards = sourceDeck.filter((card, index) => {
+      const wasMarkedReview = this.reviewCards.includes(index);
+      const wasMarkedKnown = this.knownCards.includes(index);
+
+      return wasMarkedReview || !wasMarkedKnown;
+    });
+
+    if (reviewableCards.length === 0) {
+      return;
+    }
+
+    this.flashcards = reviewableCards;
+
+    this.currentIndex = 0;
+    this.showAnswer = false;
+    this.sessionComplete = false;
+
+    this.knownCards = [];
+    this.reviewCards = [];
+
+    this.isWeakReviewMode = true;
+  }
+
+  studyFullDeck() {
+    this.flashcards = [...this.originalFlashcards];
+
+    this.currentIndex = 0;
+    this.showAnswer = false;
+    this.sessionComplete = false;
+
+    this.knownCards = [];
+    this.reviewCards = [];
+
+    this.isWeakReviewMode = false;
   }
   
   finishSession() {
