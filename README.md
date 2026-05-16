@@ -29,7 +29,7 @@ Python • FastAPI • Angular • File Processing • REST APIs • Parser Desi
 
 ---
 
-# Screenshots
+## Screenshots
 
 ## Upload Page (Light Mode)
 
