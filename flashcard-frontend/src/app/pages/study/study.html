@@ -1,106 +1,181 @@
 <main class="study-page">
   <section *ngIf="flashcards.length > 0; else noCards" class="study-shell">
 
-    <header class="study-header">
-      <div>
-        <p class="eyebrow">Study Mode</p>
-        <h1>Review Your Flashcards</h1>
+    <section *ngIf="!sessionComplete; else sessionResults">
+
+      <header class="study-header">
+        <div>
+          <p class="eyebrow">Study Mode</p>
+          <h1>Review Your Flashcards</h1>
+        </div>
+
+        <p class="card-count">
+          Card {{ currentIndex + 1 }} of {{ flashcards.length }}
+        </p>
+      </header>
+
+      <div class="segmented-progress">
+        <div
+          *ngFor="let card of flashcards; let i = index"
+          class="progress-segment"
+          [ngClass]="getCardStatus(i)"
+        ></div>
       </div>
 
-      <p class="card-count">
-        Card {{ currentIndex + 1 }} of {{ flashcards.length }}
-      </p>
-    </header>
+      <section class="flashcard-viewer">
+        <div class="flashcard">
+          <p class="card-label">Question</p>
 
-    <div class="progress-track">
+          <h2
+            class="question-text"
+            *ngIf="currentCard.term; else plainQuestion"
+          >
+            {{ getQuestionPrefix() }}
+            <span class="term-highlight">"{{ currentCard.term }}"</span>{{ getQuestionSuffix() }}
+          </h2>
+
+          <ng-template #plainQuestion>
+            <h2 class="question-text">
+              {{ currentCard.front }}
+            </h2>
+          </ng-template>
+
+          <div *ngIf="showAnswer" class="answer-section">
+            <p class="card-label">Answer</p>
+            <h2>{{ currentCard.back }}</h2>
+          </div>
+
+          <div class="keyboard-hints">
+            <div>← → Navigate</div>
+            <div>[ Space ] Show/Hide</div>
+            <div>↓ Review • ↑ Knew It</div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="study-controls">
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="previousCard()"
+          [disabled]="currentIndex === 0"
+        >
+          ← Back
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="toggleAnswer()"
+        >
+          {{ showAnswer ? 'Hide Answer' : 'Show Answer' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          [class.finish-button]="currentIndex === flashcards.length - 1"
+          (click)="currentIndex === flashcards.length - 1 ? finishSession() : nextCard()"
+        >
+          {{ currentIndex === flashcards.length - 1 ? 'Finish Session' : 'Next →' }}
+        </button>
+      </footer>
+
+      <div class="study-feedback">
+        <button
+          type="button"
+          class="review-button"
+          (click)="markReviewAgain()"
+        >
+          ↓ Review
+        </button>
+
+        <button
+          type="button"
+          class="known-button"
+          (click)="markKnown()"
+        >
+          ↑ Knew It
+        </button>
+      </div>
+
+    </section>
+
+    <ng-template #sessionResults>
+  <section class="results-card">
+    <div class="results-icon">
+      ✓
+    </div>
+
+    <p class="eyebrow">Session Complete</p>
+
+    <h1>Study Session Results</h1>
+
+    <p class="results-message"
+      [innerHTML]="completionMessage"
+    ></p>
+
+    <div class="segmented-summary">
       <div
-        class="progress-fill"
-        [style.width.%]="((currentIndex + 1) / flashcards.length) * 100"
+        *ngFor="let card of flashcards; let i = index"
+        class="summary-segment"
+        [ngClass]="getCardStatus(i)"
       ></div>
     </div>
 
-    <section class="flashcard-viewer">
-      <div class="flashcard">
-        <p class="card-label">Question</p>
-
-    <h2
-      class="question-text"
-      *ngIf="currentCard.term; else plainQuestion"
-    >
-      {{ getQuestionPrefix() }}
-      <span class="term-highlight">"{{ currentCard.term }}"</span>{{ getQuestionSuffix() }}
-    </h2>
-
-    <ng-template #plainQuestion>
-      <h2 class="question-text">
-        {{ currentCard.front }}
-      </h2>
-    </ng-template>
-
-        <ng-template #plainQuestion>
-          <h1 class="question-text">
-            {{ currentCard.front }}
-          </h1>
-        </ng-template>
-
-        <div *ngIf="showAnswer" class="answer-section">
-          <p class="card-label">Answer</p>
-          <h2>{{ currentCard.back }}</h2>
-        </div>
-        <div class="keyboard-hints">
-        <div>← → Navigate</div>
-        <div>[ Space ] Show/Hide</div>
-        <div>↓ Review • ↑ Knew It</div>
-        </div>
+    <div class="results-grid">
+      <div class="result-stat">
+        <strong>{{ flashcards.length }}</strong>
+        <span>Cards Reviewed</span>
       </div>
-    </section>
 
-    <footer class="study-controls">
-      <button
-        type="button"
-        class="secondary-button"
-        (click)="previousCard()"
-        [disabled]="currentIndex === 0"
-      >
-        ← Back
-      </button>
+      <div class="result-stat">
+        <strong>{{ knownCards.length }}</strong>
+        <span>Knew It</span>
+      </div>
 
+      <div class="result-stat">
+        <strong>{{ reviewCards.length }}</strong>
+        <span>Review</span>
+      </div>
+
+      <div class="result-stat">
+        <strong>{{ unratedCount }} / {{ flashcards.length }}</strong>
+        <span>Unrated</span>
+      </div>
+
+      <div class="result-stat hero-stat">
+        <strong>{{ masteryPercent }}%</strong>
+        <span>Mastery</span>
+      </div>
+    </div>
+
+    <div class="results-actions">
       <button
         type="button"
         class="primary-button"
-        (click)="toggleAnswer()"
       >
-        {{ showAnswer ? 'Hide Answer' : 'Show Answer' }}
+        Review Weak Cards
       </button>
 
       <button
         type="button"
         class="secondary-button"
-        (click)="nextCard()"
-        [disabled]="currentIndex === flashcards.length - 1"
+        (click)="restartSession()"
       >
-        Next →
-      </button>
-    </footer>
-      <div class="study-feedback">
-
-      <button
-        type="button"
-        class="review-button"
-        (click)="markReviewAgain()"
-      >
-        ↓ Review
+        Study Again
       </button>
 
       <button
         type="button"
-        class="known-button"
-        (click)="markKnown()"
+        class="secondary-button"
       >
-        ↑ Knew It
+        Return to Deck
       </button>
-
     </div>
+  </section>
+</ng-template>
+
   </section>
 
   <ng-template #noCards>

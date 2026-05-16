@@ -207,6 +207,169 @@ button:disabled {
   transition: all 0.2s ease;
 }
 
+.finish-button {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border-color: var(--button-primary-bg);
+}
+
+.results-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  padding: 56px;
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+}
+
+.results-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.results-message {
+  max-width: 520px;
+  margin: 14px auto 28px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.segmented-progress,
+.segmented-summary {
+  width: 100%;
+  display: flex;
+  gap: 1px;
+}
+
+.segmented-progress {
+  height: 10px;
+  margin-bottom: 32px;
+}
+
+.segmented-summary {
+  height: 14px;
+  margin-bottom: 36px;
+}
+
+.progress-segment,
+.summary-segment {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 999px;
+  background: var(--progress-track);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.progress-segment.known,
+.summary-segment.known {
+  background: #22c55e;
+}
+
+.progress-segment.known.current,
+.summary-segment.known.current {
+  background: #15803d;
+
+  transform: scaleY(1.4);
+
+  box-shadow: 0 0 0 2px var(--page-bg);
+}
+
+.progress-segment.review,
+.summary-segment.review {
+  background: #ef4444;
+}
+
+.progress-segment.review.current,
+.summary-segment.review.current {
+  background: #b91c1c;
+
+  transform: scaleY(1.4);
+
+  box-shadow: 0 0 0 2px var(--page-bg);
+}
+
+.progress-segment.current,
+.summary-segment.current {
+  background: var(--progress-fill);
+  transform: scaleY(1.35) translate(-2px);
+
+  outline: 2px solid var(--page-bg);
+  box-shadow: 0 0 0 2px var(--page-bg);
+}
+
+.progress-segment.unrated,
+.summary-segment.unrated {
+  background: var(--progress-track);
+}
+
+.progress-segment.unrated.current,
+.summary-segment.unrated.current {
+  background: var(--progress-fill);
+
+  transform: scaleY(1.4);
+
+  box-shadow: 0 0 0 2px var(--page-bg);
+}
+
+.summary-known {
+  background: #22c55e;
+}
+
+.summary-review {
+  background: #ef4444;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.result-stat {
+  background: var(--page-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 22px 18px;
+}
+
+.result-stat strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.result-stat span {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.hero-stat {
+  border: 2px solid var(--accent-blue);
+}
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.summary-unrated {
+  background: var(--border-soft);
+}
+
 .empty-state {
   max-width: 600px;
   margin: 120px auto;
