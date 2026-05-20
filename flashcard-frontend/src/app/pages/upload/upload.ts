@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { FlashcardService } from "../../services/flashcard";
 import { Router } from "@angular/router";
 import { StudySessionService } from "../../services/study-session";
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: "app-upload",
@@ -23,8 +24,12 @@ export class Upload {
     private cdr: ChangeDetectorRef,
     private flashcardService: FlashcardService,
     private router: Router,
-    private studySessionService: StudySessionService
-  ) {}
+    private studySessionService: StudySessionService,
+    private titleService: Title
+
+  ) {
+    this.titleService.setTitle("Flashcard Generator | Upload");
+  }
 
   onFileSelected(event: any) {
     this.selectedFiles = Array.from(event.target.files);
@@ -60,7 +65,14 @@ export class Upload {
         const cards = response.cards ?? [];
         const total = response.total_cards ?? 0;
 
-        this.flashcardService.setFlashcards(cards, total);
+        this.flashcardService.setFlashcards(
+          cards,
+          total,
+          response.duplicates_skipped ?? 0,
+          response.skipped_lines ?? [],
+          response.important_duplicates ?? []
+        );
+        
         this.studySessionService.clearSession();
 
         this.router.navigate(["/deck", "generated"]);

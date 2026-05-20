@@ -2,6 +2,8 @@ import { Component, HostListener } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FlashcardService } from "../../services/flashcard";
 import { StudySessionService } from '../../services/study-session';
+import { Router } from "@angular/router";
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: "app-study",
@@ -23,19 +25,30 @@ export class Study {
 
   constructor(
     private flashcardService: FlashcardService,
-    private studySessionService: StudySessionService
+    private studySessionService: StudySessionService,
+    private router: Router,
+    private titleService: Title
+
   ) {
+    this.titleService.setTitle('Flashcard Generator | Study Session');
+
     const savedSession = this.studySessionService.loadSession();
 
     if (savedSession) {
-      this.flashcards = savedSession.flashcards ?? [];
-      this.originalFlashcards = savedSession.originalFlashcards ?? [];
-      this.currentIndex = savedSession.currentIndex ?? 0;
-      this.showAnswer = savedSession.showAnswer ?? false;
-      this.sessionComplete = savedSession.sessionComplete ?? false;
-      this.knownCards = savedSession.knownCards ?? [];
-      this.reviewCards = savedSession.reviewCards ?? [];
-      this.isWeakReviewMode = savedSession.isWeakReviewMode ?? false;
+    this.flashcards = savedSession.flashcards ?? [];
+    this.originalFlashcards = savedSession.originalFlashcards ?? [];
+    this.currentIndex = savedSession.currentIndex ?? 0;
+    this.showAnswer = savedSession.showAnswer ?? false;
+    this.sessionComplete = savedSession.sessionComplete ?? false;
+    this.knownCards = savedSession.knownCards ?? [];
+    this.reviewCards = savedSession.reviewCards ?? [];
+    this.isWeakReviewMode = savedSession.isWeakReviewMode ?? false;
+
+    this.titleService.setTitle(
+    this.sessionComplete
+      ? 'Flashcard Generator | Session Results'
+      : 'Flashcard Generator | Study Session'
+    );
     } else {
     this.flashcards = this.flashcardService.getFlashcards();
     this.originalFlashcards = [...this.flashcards];
@@ -165,6 +178,10 @@ export class Study {
     } else {
       this.sessionComplete = true;
       this.showAnswer = false;
+
+      this.titleService.setTitle(
+        'Flashcard Generator | Session Results'
+      );
     }
 
     this.saveSessionState();
@@ -188,6 +205,11 @@ export class Study {
     this.sessionComplete = false;
     this.knownCards = [];
     this.reviewCards = [];
+    this.titleService.setTitle(
+      this.isWeakReviewMode
+        ? 'Flashcard Generator | Focused Review'
+        : 'Flashcard Generator | Study Session'
+    );
 
     this.saveSessionState();
   }
@@ -303,6 +325,7 @@ export class Study {
     this.currentIndex = 0;
     this.showAnswer = false;
     this.sessionComplete = false;
+    this.titleService.setTitle('Flashcard Generator | Focused Review');
 
     this.knownCards = [];
     this.reviewCards = [];
@@ -324,14 +347,27 @@ export class Study {
 
     this.isWeakReviewMode = false;
 
+    this.titleService.setTitle('Flashcard Generator | Study Session');
+
     this.saveSessionState();
   }
   
   finishSession() {
     this.sessionComplete = true;
     this.showAnswer = false;
+    this.titleService.setTitle(
+    'Flashcard Generator | Session Results'
+    );
 
     this.saveSessionState();
+  }
+
+  returnToDeck() {
+    this.router.navigate(["/deck", "generated"]);
+  }
+
+  get reviewableCount(): number {
+    return this.flashcards.length - this.knownCards.length;
   }
 
   saveSessionState() {

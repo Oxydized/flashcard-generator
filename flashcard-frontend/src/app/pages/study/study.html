@@ -167,9 +167,13 @@
         type="button"
         class="primary-button"
         (click)="reviewWeakCards()"
-        [disabled]="reviewCards.length === 0"
+        [disabled]="reviewableCount === 0"
       >
-        Review Weak Cards
+        {{
+          reviewableCount === 0
+            ? 'All Cards Known'
+            : 'Review Weak Cards (' + reviewableCount + ')'
+        }}
       </button>
 
       <button
@@ -192,6 +196,7 @@
       <button
         type="button"
         class="secondary-button"
+        (click)="returnToDeck()"
       >
         Return to Deck
       </button>

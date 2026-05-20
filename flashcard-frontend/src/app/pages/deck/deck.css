@@ -6,13 +6,17 @@
 }
 
 .deck-shell {
-  max-width: 940px;
+  width: 100%;
+  max-width: 1000px;
   margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .deck-header {
   text-align: center;
-  margin-bottom: 24px;
 }
 
 .eyebrow {
@@ -40,7 +44,7 @@
 .deck-actions {
   display: flex;
   justify-content: center;
-  margin-bottom: 28px;
+  gap: 14px;
 }
 
 .primary-button {
@@ -58,16 +62,120 @@
   transform: translateY(-1px);
 }
 
+.generation-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.summary-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  padding: 18px;
+  text-align: center;
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.summary-item span {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: -10px auto 8px;
+
+  padding: 8px 14px;
+
+  border: 1px solid var(--button-utility-border);
+  border-radius: 999px;
+
+  background: var(--button-utility-bg);
+
+  color: var(--button-utility-text);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: var(--button-utility-shadow);
+
+  transition: all 0.2s ease;
+}
+
+.details-button:hover {
+  color: var(--text-main);
+  border-color: var(--accent-blue);
+}
+
+.skipped-lines-panel {
+  display: grid;
+  gap: 10px;
+
+  max-height: 420px;
+  overflow-y: auto;
+
+  padding-right: 6px;
+}
+
+.skipped-line {
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.skipped-line p {
+  margin: 0 0 6px;
+}
+
+.skipped-line small {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.preview-header {
+  text-align: center;
+}
+
+.preview-header h2 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.preview-header p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
 .card-preview-list {
+  width: 100%;
+
   display: grid;
   gap: 16px;
 }
 
 .preview-card {
+  width: 100%;
+
   background: var(--page-bg);
   border: 1px solid var(--preview-border);
   border-radius: 20px;
   padding: 20px 24px;
+
   box-shadow: 0 12px 30px rgba(23, 32, 51, 0.08);
 
   transition: all 0.2s ease;
@@ -79,19 +187,21 @@
 
 .card-label {
   margin: 0 0 8px;
+
   font-size: 0.72rem;
   font-weight: 700;
+
   letter-spacing: 0.08em;
   text-transform: uppercase;
+
   color: var(--text-main);
 }
 
 .preview-card h2 {
-  margin: 0;
+  margin: 0 0 14px;
+
   font-size: 1.35rem;
   line-height: 1.35;
-
-  margin-bottom: 14px;
 }
 
 .answer-label {
@@ -104,29 +214,62 @@
   line-height: 1.6;
 }
 
+.secondary-button {
+  justify-self: center;
+
+  margin-top: 10px;
+
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 999px;
+
+  padding: 12px 22px;
+
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: var(--button-secondary-shadow);
+
+  transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-blue);
+}
+
 .empty-state {
   text-align: center;
   color: var(--text-main);
   font-weight: 600;
 }
 
-.secondary-button {
-  justify-self: center;
-  margin-top: 10px;
+@media (max-width: 768px) {
+  .deck-page {
+    padding: 40px 18px;
+  }
 
-  border: 1px solid #dfe6f2;
-  border-radius: 999px;
-  padding: 12px 22px;
+  .generation-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-  background: var(--page-bg);
-  color: var(--text-main);
-  font-weight: 700;
-  cursor: pointer;
+  .deck-header h1 {
+    font-size: 1.8rem;
+  }
 
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+  .preview-card {
+    padding: 18px;
+  }
 }
 
-.secondary-button:hover {
-  transform: translateY(-1px);
+@media (max-width: 520px) {
+  .generation-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-header h2 {
+    font-size: 1.6rem;
+  }
 }

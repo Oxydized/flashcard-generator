@@ -5,6 +5,16 @@
   --text-muted: #52627a;
   --border-soft: #e6ebf3;
 
+  --button-secondary-bg: #ffffff;
+  --button-secondary-border: #cfd7e6;
+  --button-secondary-text: var(--text-main);
+  --button-secondary-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+
+  --button-utility-bg: transparent;
+  --button-utility-border: #cfd7e6;
+  --button-utility-text: var(--text-muted);
+  --button-utility-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
   --primary: #172033;
   --primary-text: #ffffff;
 
@@ -28,6 +38,16 @@
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --border-soft: #334155;
+
+  --button-secondary-bg: var(--card-bg);
+  --button-secondary-border: #64748b;
+  --button-secondary-text: var(--text-main);
+  --button-secondary-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  --button-utility-bg: transparent;
+  --button-utility-border: #475569;
+  --button-utility-text: var(--text-muted);
+  --button-utility-shadow: none;
 
   --primary: #f8fafc;
   --primary-text: #0f172a;

@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FlashcardService } from "../../services/flashcard";
 import { Router } from "@angular/router";
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: "app-deck",
@@ -15,18 +16,27 @@ import { Router } from "@angular/router";
 export class Deck {
   flashcards: any[] = [];
   totalCards = 0;
+  duplicatesSkipped = 0;
+  skippedLines: any[] = [];
+  importantDuplicates: any[] = [];
+  showSkippedDetails = false;
 
   constructor(
     private flashcardService: FlashcardService,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {
+    this.titleService.setTitle('Flashcard Generator | Deck Preview');
+    this.duplicatesSkipped = this.flashcardService.getDuplicatesSkipped();
+    this.skippedLines = this.flashcardService.getSkippedLines();
+    this.importantDuplicates = this.flashcardService.getImportantDuplicates();
     this.flashcards = this.flashcardService.getFlashcards();
     this.totalCards = this.flashcardService.getTotalCards();
   }
   startStudy() {
   this.router.navigate(['/study', 'generated']);
   }
-  previewLimit = 5;
+  previewLimit = 4;
   showAllCards = false;
 
   get visibleCards() {
@@ -35,6 +45,14 @@ export class Deck {
 
   toggleShowAllCards() {
     this.showAllCards = !this.showAllCards;
+  }
+
+  toggleSkippedDetails() {
+    this.showSkippedDetails = !this.showSkippedDetails;
+  }
+
+  returnToUpload() {
+    this.router.navigate(["/upload"]);
   }
 }
 

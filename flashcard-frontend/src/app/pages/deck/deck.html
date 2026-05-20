@@ -19,6 +19,63 @@
       >
         Start Study Session
       </button>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="returnToUpload()"
+      >
+        Upload New Files
+      </button>    
+    </section>
+
+    <section class="generation-summary">
+      <div class="summary-item">
+        <strong>{{ totalCards }}</strong>
+        <span>Cards Generated</span>
+      </div>
+
+      <div class="summary-item">
+        <strong>{{ skippedLines.length }}</strong>
+        <span>Skipped Lines</span>
+      </div>
+
+      <div class="summary-item">
+        <strong>{{ duplicatesSkipped }}</strong>
+        <span>Duplicates Skipped</span>
+      </div>
+
+      <div class="summary-item">
+        <strong>{{ importantDuplicates.length }}</strong>
+        <span>Important Duplicates</span>
+      </div>
+    </section>
+
+    <button
+      *ngIf="skippedLines.length > 0"
+      type="button"
+      class="details-button"
+      (click)="toggleSkippedDetails()"
+    >
+      {{ showSkippedDetails ? 'Hide Unsupported / Skipped Lines' : 'View Unsupported / Skipped Lines' }}
+    </button>
+
+    <section
+      *ngIf="showSkippedDetails"
+      class="skipped-lines-panel"
+    >
+      <article
+        *ngFor="let skipped of skippedLines"
+        class="skipped-line"
+      >
+        <p>{{ skipped.line }}</p>
+        <small>{{ skipped.reason }}</small>
+      </article>
+    </section>
+
+    <section class="preview-header">
+      <h2>Deck Preview</h2>
+      <p>Preview a few generated flashcards before studying.</p>
     </section>
 
     <section

@@ -6,6 +6,10 @@ import { Injectable } from '@angular/core';
 export class FlashcardService {
   private storageKey = 'flashcardDeck';
 
+  duplicatesSkipped = 0;
+  skippedLines: any[] = [];
+  importantDuplicates: any[] = [];
+  
   flashcards: any[] = [];
   totalCards = 0;
 
@@ -13,9 +17,18 @@ export class FlashcardService {
     this.loadFromStorage();
   }
 
-  setFlashcards(cards: any[], total: number) {
+  setFlashcards(
+    cards: any[],
+    total: number,
+    duplicatesSkipped = 0,
+    skippedLines: any[] = [],
+    importantDuplicates: any[] = []
+  ) {
     this.flashcards = cards;
     this.totalCards = total;
+    this.duplicatesSkipped = duplicatesSkipped;
+    this.skippedLines = skippedLines;
+    this.importantDuplicates = importantDuplicates;
 
     this.saveToStorage();
   }
@@ -26,6 +39,18 @@ export class FlashcardService {
 
   getTotalCards() {
     return this.totalCards;
+  }
+
+  getDuplicatesSkipped() {
+    return this.duplicatesSkipped;
+  }
+
+  getSkippedLines() {
+    return this.skippedLines;
+  }
+
+  getImportantDuplicates() {
+    return this.importantDuplicates;
   }
 
   clearFlashcards() {
@@ -39,6 +64,9 @@ export class FlashcardService {
     const deckData = {
       flashcards: this.flashcards,
       totalCards: this.totalCards,
+      duplicatesSkipped: this.duplicatesSkipped,
+      skippedLines: this.skippedLines,
+      importantDuplicates: this.importantDuplicates,
       savedAt: new Date().toISOString()
     };
 
@@ -57,6 +85,11 @@ export class FlashcardService {
 
       this.flashcards = deckData.flashcards ?? [];
       this.totalCards = deckData.totalCards ?? this.flashcards.length;
+
+      this.duplicatesSkipped = deckData.duplicatesSkipped ?? 0;
+      this.skippedLines = deckData.skippedLines ?? [];
+      this.importantDuplicates = deckData.importantDuplicates ?? [];
+
     } catch (error) {
       console.error('Failed to load saved deck:', error);
       localStorage.removeItem(this.storageKey);
