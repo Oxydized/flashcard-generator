@@ -1,6 +1,7 @@
 import { Component, HostListener } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FlashcardService } from "../../services/flashcard";
+import { StudySessionService } from '../../services/study-session';
 
 @Component({
   selector: "app-study",
@@ -20,10 +21,26 @@ export class Study {
   originalFlashcards: any[] = [];
     
 
-  constructor(private flashcardService: FlashcardService) {
+  constructor(
+    private flashcardService: FlashcardService,
+    private studySessionService: StudySessionService
+  ) {
+    const savedSession = this.studySessionService.loadSession();
+
+    if (savedSession) {
+      this.flashcards = savedSession.flashcards ?? [];
+      this.originalFlashcards = savedSession.originalFlashcards ?? [];
+      this.currentIndex = savedSession.currentIndex ?? 0;
+      this.showAnswer = savedSession.showAnswer ?? false;
+      this.sessionComplete = savedSession.sessionComplete ?? false;
+      this.knownCards = savedSession.knownCards ?? [];
+      this.reviewCards = savedSession.reviewCards ?? [];
+      this.isWeakReviewMode = savedSession.isWeakReviewMode ?? false;
+    } else {
     this.flashcards = this.flashcardService.getFlashcards();
     this.originalFlashcards = [...this.flashcards];
-  }
+    }
+  } 
 
   get currentCard() {
     return this.flashcards[this.currentIndex];
@@ -31,12 +48,14 @@ export class Study {
 
   toggleAnswer() {
     this.showAnswer = !this.showAnswer;
+    this.saveSessionState();
   }
 
   nextCard() {
     if (this.currentIndex < this.flashcards.length - 1) {
       this.currentIndex++;
       this.showAnswer = false;
+      this.saveSessionState();
     }
   }
 
@@ -44,6 +63,7 @@ export class Study {
     if (this.currentIndex > 0) {
       this.currentIndex--;
       this.showAnswer = false;
+      this.saveSessionState();
     }
   }
 
@@ -146,6 +166,8 @@ export class Study {
       this.sessionComplete = true;
       this.showAnswer = false;
     }
+
+    this.saveSessionState();
   }
 
   get reviewedCount(): number {
@@ -166,6 +188,8 @@ export class Study {
     this.sessionComplete = false;
     this.knownCards = [];
     this.reviewCards = [];
+
+    this.saveSessionState();
   }
 
   get unratedCount(): number {
@@ -284,6 +308,8 @@ export class Study {
     this.reviewCards = [];
 
     this.isWeakReviewMode = true;
+
+    this.saveSessionState();
   }
 
   studyFullDeck() {
@@ -297,10 +323,27 @@ export class Study {
     this.reviewCards = [];
 
     this.isWeakReviewMode = false;
+
+    this.saveSessionState();
   }
   
   finishSession() {
     this.sessionComplete = true;
     this.showAnswer = false;
+
+    this.saveSessionState();
   }
+
+  saveSessionState() {
+    this.studySessionService.saveSession({
+    flashcards: this.flashcards,
+    originalFlashcards: this.originalFlashcards,
+    currentIndex: this.currentIndex,
+    showAnswer: this.showAnswer,
+    sessionComplete: this.sessionComplete,
+    knownCards: this.knownCards,
+    reviewCards: this.reviewCards,
+    isWeakReviewMode: this.isWeakReviewMode
+  });
+}
 }

@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { FlashcardService } from '../../services/flashcard';
 import { Router } from '@angular/router';
+import { StudySessionService } from '../../services/study-session';
 
 @Component({
   selector: "app-upload",
@@ -21,7 +22,8 @@ export class Upload {
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
     private flashcardService: FlashcardService,
-    private router: Router
+    private router: Router,
+    private studySessionService: StudySessionService
   ) {}
 
   onFileSelected(event: any) {
@@ -59,6 +61,7 @@ export class Upload {
         // this.totalCards = response.total_cards ?? 0;
 
         this.flashcardService.setFlashcards(cards, total)
+        this.studySessionService.clearSession();
         this.router.navigate(['/deck', 'generated'])
 
         this.isLoading = false;

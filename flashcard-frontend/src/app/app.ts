@@ -9,9 +9,22 @@ import { RouterOutlet } from "@angular/router";
   imports: [RouterOutlet],
 })
 export class App {
+  private themeStorageKey = 'themePreference';
+
   isDarkMode = false;
+
+  constructor() {
+    const savedTheme = localStorage.getItem(this.themeStorageKey);
+
+    this.isDarkMode = savedTheme === 'dark';
+  }
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
+
+    localStorage.setItem(
+      this.themeStorageKey,
+      this.isDarkMode ? 'dark' : 'light'
+    );
   }
 }
