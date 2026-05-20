@@ -8,6 +8,7 @@ import os
 from flashcard_service import generate_flashcards
 
 app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:4200"],
@@ -15,21 +16,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 ALLOWED_EXTENSIONS = [".txt", ".docx", ".pdf"]
+
 
 class Flashcard(BaseModel):
     term: Optional[str] = None
     front: str
     back: str
 
+
 class ImportantDuplicate(BaseModel):
     term: str
     original_definition: str
     new_definition: str
 
+
 class SkippedLine(BaseModel):
     line: str
     reason: str
+
 
 class FlashcardResponse(BaseModel):
     success: bool
@@ -40,47 +46,59 @@ class FlashcardResponse(BaseModel):
     skipped_lines: List[SkippedLine]
     cards: List[Flashcard]
 
+
 @app.get("/")
 def root():
     return {"message": "Flashcard API running"}
 
+
 @app.post("/generate-flashcards", response_model=FlashcardResponse)
-async def generate_flashcards_from_file(file: UploadFile = File(...)):
-    # Get uploaded file extension, such as .txt, .docx, or .pdf
-    file_extension = os.path.splitext(file.filename)[1]
-    if file_extension.lower() not in ALLOWED_EXTENSIONS:
-        raise HTTPException(
-            status_code=400,
-            detail="Unsupported file type. Please upload a .txt, .docx, or .pdf file."
-        )
+async def generate_flashcards_from_file(files: List[UploadFile] = File(...)):
+    all_cards = []
+    all_important_duplicates = []
+    all_skipped_lines = []
+    total_duplicates_skipped = 0
+    filenames = []
 
-    # Save uploaded file temporarily so existing backend can process it
-    with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as temp_file:
-        contents = await file.read()
-        temp_file.write(contents)
-        temp_file_path = temp_file.name
+    for file in files:
+        file_extension = os.path.splitext(file.filename)[1]
 
-    try:
-        # Send temp file path into your existing flashcard generator
-        results = generate_flashcards(temp_file_path)
-        if results is None:
+        if file_extension.lower() not in ALLOWED_EXTENSIONS:
             raise HTTPException(
                 status_code=400,
-                detail="The file could not be processed."
+                detail=f"Unsupported file type: {file.filename}. Please upload a .txt, .docx, or .pdf file."
             )
-        
-        return {
-            "success": True,
-            "filename": file.filename,
-            "total_cards": len(results["cards"]),
-            "duplicates_skipped": results["duplicates_skipped"],
-            "important_duplicates": results["important_duplicates"],
-            "skipped_lines": results["skipped_lines"],
-            "cards": results["cards"]
-        }
 
-    finally:
-        # Delete temp file after processing
-        os.remove(temp_file_path)
+        filenames.append(file.filename)
 
-     
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as temp_file:
+            contents = await file.read()
+            temp_file.write(contents)
+            temp_file_path = temp_file.name
+
+        try:
+            results = generate_flashcards(temp_file_path)
+
+            if results is None:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"The file could not be processed: {file.filename}"
+                )
+
+            all_cards.extend(results["cards"])
+            total_duplicates_skipped += results["duplicates_skipped"]
+            all_important_duplicates.extend(results["important_duplicates"])
+            all_skipped_lines.extend(results["skipped_lines"])
+
+        finally:
+            os.remove(temp_file_path)
+
+    return {
+        "success": True,
+        "filename": ", ".join(filenames),
+        "total_cards": len(all_cards),
+        "duplicates_skipped": total_duplicates_skipped,
+        "important_duplicates": all_important_duplicates,
+        "skipped_lines": all_skipped_lines,
+        "cards": all_cards
+    }

@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
-import { FlashcardService } from '../../services/flashcard';
-import { Router } from '@angular/router';
-import { StudySessionService } from '../../services/study-session';
+import { FlashcardService } from "../../services/flashcard";
+import { Router } from "@angular/router";
+import { StudySessionService } from "../../services/study-session";
 
 @Component({
   selector: "app-upload",
@@ -13,7 +13,7 @@ import { StudySessionService } from '../../services/study-session';
   imports: [CommonModule],
 })
 export class Upload {
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
   flashcards: any[] = [];
   totalCards = 0;
   isLoading = false;
@@ -27,25 +27,28 @@ export class Upload {
   ) {}
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    this.selectedFiles = Array.from(event.target.files);
   }
 
   generateFlashcards() {
     console.log("Generate clicked");
 
-    if (!this.selectedFile) {
-      alert("Please select a file first.");
+    if (this.selectedFiles.length === 0) {
+      alert("Please select at least one file first.");
       return;
     }
 
-    console.log("Selected file:", this.selectedFile);
+    console.log("Selected files:", this.selectedFiles);
 
     this.isLoading = true;
     this.flashcards = [];
     this.totalCards = 0;
 
     const formData = new FormData();
-    formData.append("file", this.selectedFile);
+
+    this.selectedFiles.forEach((file) => {
+      formData.append("files", file);
+    });
 
     this.http.post(
       "http://127.0.0.1:8000/generate-flashcards",
@@ -53,16 +56,14 @@ export class Upload {
     ).subscribe({
       next: (response: any) => {
         console.log("API response:", response);
-        
+
         const cards = response.cards ?? [];
         const total = response.total_cards ?? 0;
 
-        // this.flashcards = response.cards ?? [];
-        // this.totalCards = response.total_cards ?? 0;
-
-        this.flashcardService.setFlashcards(cards, total)
+        this.flashcardService.setFlashcards(cards, total);
         this.studySessionService.clearSession();
-        this.router.navigate(['/deck', 'generated'])
+
+        this.router.navigate(["/deck", "generated"]);
 
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -73,8 +74,7 @@ export class Upload {
         this.cdr.detectChanges();
       },
       complete: () => {
-        console.log("Request complete"
-        )
+        console.log("Request complete");
       }
     });
   }

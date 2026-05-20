@@ -5,7 +5,7 @@
     <h1>Turn Your Notes Into Flashcards</h1>
 
     <p class="upload-subtitle">
-      Upload a .txt, .docx, or .pdf file and generate a study-ready deck.
+      Upload one or more .txt, .docx, or .pdf files and generate a study-ready deck.
     </p>
 
     <section class="upload-card">
@@ -13,24 +13,35 @@
         <input 
           type="file"
           accept=".txt,.docx,.pdf"
+          multiple
           (change)="onFileSelected($event)" 
         />
 
         <span class="upload-icon">↑</span>
 
         <strong>
-          {{ selectedFile ? selectedFile.name : 'Choose a file to upload' }}
+          {{
+            selectedFiles.length === 0
+              ? 'Choose one or more files to upload'
+              : selectedFiles.length === 1
+                ? selectedFiles[0].name
+                : selectedFiles.length + ' files selected'
+          }}
         </strong>
 
         <small>
-          {{ selectedFile ? 'Ready to generate flashcards' : 'TXT, DOCX, or PDF supported' }}
+          {{
+            selectedFiles.length > 0
+              ? 'Ready to generate flashcards'
+              : 'TXT, DOCX, or PDF supported'
+          }}
         </small>
       </label>
 
       <button 
         type="button"
         class="generate-button"
-        [disabled]="!selectedFile || isLoading"
+        [disabled]="selectedFiles.length === 0 || isLoading"
         (click)="generateFlashcards()"
       >
         {{ isLoading ? 'Generating...' : 'Generate Flashcards' }}
