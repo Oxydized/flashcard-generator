@@ -6,7 +6,19 @@ The application supports `.txt`, `.docx`, and `.pdf` uploads, processes notes th
 
 The project originally began as a backend parsing exercise and evolved into a multi-page study application focused on educational UX, frontend architecture, and scalable backend processing.
 
+The frontend and backend are fully decoupled and communicate through REST API endpoints, allowing independent deployment and scalability.
+
+The application is fully deployed with a production Angular frontend hosted on Vercel and a FastAPI backend hosted on Render.
+
 ---
+
+## Live Demo
+
+Frontend:
+https://flashcard-generator-ochre.vercel.app/upload
+
+Backend API:
+https://flashcard-generator-api.onrender.com/docs
 
 ## Key Technologies
 
@@ -20,7 +32,7 @@ Python • FastAPI • Angular • File Processing • REST APIs • Parser Desi
 
 - Upload `.txt`, `.docx`, and `.pdf` files
 - Automatically parse notes into flashcards
-- Supports multiple input formats
+- Support for multiple uploaded files
 - Cleans and validates generated cards
 - Detects duplicate and fuzzy duplicate flashcards
 - Tracks skipped or unsupported lines with reason classifications
@@ -55,6 +67,12 @@ Python • FastAPI • Angular • File Processing • REST APIs • Parser Desi
 - Dark/light themes
 - Multi-page SPA routing
 - Shared service-based state management
+- Persistent study sessions
+- Persistent dark/light theme
+- Adaptive weak-card review mode
+- Reviewable-card filtering
+- Generation analytics dashboard
+- Multi-file upload support
 
 ---
 
@@ -144,6 +162,16 @@ The parser automatically pairs supported questions with the next valid answer li
 
 ---
 
+# Deployment
+
+Frontend hosted on Vercel
+
+Backend API hosted on Render
+
+Production frontend communicates with deployed FastAPI backend through REST API requests.
+
+---
+
 # Project Backend Structure
 
 ```text
@@ -183,7 +211,7 @@ flashcard-frontend/
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Oxydized/flashcard-generator
 ```
 
 Navigate into the project folder:
@@ -299,7 +327,6 @@ Unsupported file types return a structured API error response.
 
 ## Parser Enhancements  
 
-- Multi-file upload support
 - Improved natural-language parsing
 - Better parser confidence scoring
 - More advanced Q&A pairing
@@ -325,7 +352,6 @@ Unsupported file types return a structured API error response.
 - AWS deployment
 - Kubernetes orchestration
 - Mobile responsiveness
-- Spaced repetition
 - AI-assisted study recommendations
 - Optional database support for saved decks
 
@@ -333,7 +359,6 @@ Unsupported file types return a structured API error response.
 
 - OCR/image-based PDF support
 - Better DOCX formatting support
-- Support for multiple uploaded files
 
 ---
 
