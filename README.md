@@ -45,15 +45,19 @@ Python • FastAPI • Angular • File Processing • REST APIs • Parser Desi
 
 ## Upload Page (Light Mode)
 
-![Upload Page](https://github.com/Oxydized/flashcard-generator/blob/793846469a222c24baf724c0528eddc04e12fee2/Upload%20-%20Light%20Mode.png)
+![Upload Page](screenshots/upload-light.png)
 
-## Study Session (Light Mode)
+## Deck Preview (Light Mode)
 
-![Study Session-Light](https://github.com/Oxydized/flashcard-generator/blob/793846469a222c24baf724c0528eddc04e12fee2/Study%20Session%20-%20Light%20Mode.png)
+![Deck Preview](screenshots/preview-light.png)
 
 ## Study Session (Dark Mode)
 
-![Study Session-Dark](https://github.com/Oxydized/flashcard-generator/blob/793846469a222c24baf724c0528eddc04e12fee2/Study%20Session%20-%20Dark%20Mode.png)
+![Study Session](screenshots/study-dark.png)
+
+## Results (Dark Mode)
+
+![Results Screen](screenshots/results-dark.png)
 
 ---
 
