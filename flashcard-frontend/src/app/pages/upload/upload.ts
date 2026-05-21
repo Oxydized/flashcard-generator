@@ -6,6 +6,8 @@ import { Router } from "@angular/router";
 import { StudySessionService } from "../../services/study-session";
 import { Title } from '@angular/platform-browser';
 
+const API_URL = "https://flashcard-generator-api.onrender.com";
+
 @Component({
   selector: "app-upload",
   standalone: true,
@@ -56,7 +58,7 @@ export class Upload {
     });
 
     this.http.post(
-      "http://127.0.0.1:8000/generate-flashcards",
+      `${API_URL}/generate-flashcards`,
       formData
     ).subscribe({
       next: (response: any) => {
