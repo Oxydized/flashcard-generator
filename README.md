@@ -22,7 +22,19 @@ https://flashcard-generator-api.onrender.com/docs
 
 ## Key Technologies
 
-Python • FastAPI • Angular • File Processing • REST APIs • Parser Design • TypeScript • HTML/CSS
+Frontend:
+- Angular
+- TypeScript
+- HTML/CSS
+
+Backend:
+- Python
+- FastAPI
+
+Core Concepts:
+- REST APIs
+- File Processing
+- Parser Design
 
 ---
 
